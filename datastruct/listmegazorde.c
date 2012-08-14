@@ -15,21 +15,36 @@ typedef ListNode *nodePointer;
 
 
 int concateList(nodePointer,nodePointer);
+int mixListSort(nodePointer,nodePointer);
 void printList(nodePointer);
 int isEmpty(nodePointer);
 
 int main(void)
 {
 	nodePointer startNode = NULL;
+	nodePointer startNodeTwo = NULL;
 
 	startNode = malloc(sizeof(ListNode));	
 	if(startNode != NULL){
 		startNode->value = 1;
 		nodePointer scdNode = malloc(sizeof(ListNode));
-		scdNode->value = 2;
+		scdNode->value = 5;
 		scdNode->nextNode = NULL;
 		startNode->nextNode = scdNode;
 	}
+	printList(startNode);
+
+	startNodeTwo = malloc(sizeof(ListNode));
+	if(startNodeTwo != NULL){
+		startNodeTwo->value = 9;
+		nodePointer scdNode = malloc(sizeof(ListNode));
+		scdNode->value = 2;
+		scdNode->nextNode = NULL;
+		startNodeTwo->nextNode = scdNode;
+	}
+	printList(startNodeTwo);
+
+	concateList(startNode, startNodeTwo);
 	printList(startNode);
 	return 0;
 }
@@ -54,6 +69,18 @@ int concateList(nodePointer mainList, nodePointer secondList)
 
 }
 
+/**
+ * This function mix the second list on the first one. The elements are insert in order
+ *
+ * */
+int mixListSort(nodePointer firstList, nodePointer secondList)
+{
+	if(firstList != NULL){
+		
+	}
+}
+
+
 /*
  *The function verify if a list is empty
  * */
@@ -69,7 +96,7 @@ void printList(nodePointer list)
 {
 	nodePointer currentNode = list;
 	if(!isEmpty(list)){
-		printf("The list's values are: \n");	
+		printf("\nThe list's values are: ");	
 		while(currentNode != NULL){
 			int value = currentNode->value;
 			printf("%d -> ", value);
@@ -79,5 +106,6 @@ void printList(nodePointer list)
 	}else{
 		printf("The list is empty, idiot!");
 	}
+	printf("\n");
 }
 
