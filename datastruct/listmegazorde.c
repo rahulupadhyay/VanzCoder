@@ -3,6 +3,7 @@
  *
  * */
 #include<stdio.h>
+#include<stdlib.h>
 
 struct node
 {
@@ -15,9 +16,10 @@ typedef ListNode *nodePointer;
 
 
 int concateList(nodePointer,nodePointer);
-int mixListSort(nodePointer,nodePointer);
+nodePointer merge(nodePointer,nodePointer);
 void printList(nodePointer);
 int isEmpty(nodePointer);
+void insertSort(nodePointer,nodePointer);
 
 int main(void)
 {
@@ -43,9 +45,10 @@ int main(void)
 		startNodeTwo->nextNode = scdNode;
 	}
 	printList(startNodeTwo);
-
-	concateList(startNode, startNodeTwo);
-	printList(startNode);
+	printf("Vai chamar o merge");
+	nodePointer newList = merge(startNode, startNodeTwo);
+	printList(newList);
+	printf("Executation finish!");
 	return 0;
 }
 
@@ -70,14 +73,30 @@ int concateList(nodePointer mainList, nodePointer secondList)
 }
 
 /**
- * This function mix the second list on the first one. The elements are insert in order
+ * This function merge two list on a third one. The elements are insert in order
  *
  * */
-int mixListSort(nodePointer firstList, nodePointer secondList)
+nodePointer merge(nodePointer firstList, nodePointer secondList)
 {
-	if(firstList != NULL){
-		
+	printf("entrou no merge");
+	nodePointer newList = malloc(sizeof(ListNode));
+	if(newList != NULL){
+		nodePointer currentNode = firstList;
+		printf("O valor do primeiro elemento eh -> %d", currentNode->value);
+		while(currentNode != NULL){
+			insertSort(newList, currentNode);
+			currentNode = currentNode->nextNode;
+		}
+		printf("Elementos da primeira lista foram adicionados");
+		currentNode = secondList;
+		while(currentNode != NULL){
+			insertSort(newList,currentNode);
+			currentNode = currentNode->nextNode;
+		}
+		printf("Elementos da segunda lista foram adicionados");
 	}
+	printf("final do merge");
+	return newList;
 }
 
 
@@ -106,6 +125,22 @@ void printList(nodePointer list)
 	}else{
 		printf("The list is empty, idiot!");
 	}
-	printf("\n");
+	printf("\nVai sair do print\n");
+}
+
+/**
+ *This function insert a element in a list.
+ * */
+void insertSort(nodePointer list,nodePointer element )
+{
+	nodePointer currentNode = list;
+	if(currentNode != NULL){
+		while(1){
+			if(currentNode->nextNode  == NULL){
+				currentNode->nextNode = element;
+				return;
+			}
+		}
+	}
 }
 
