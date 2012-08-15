@@ -16,7 +16,7 @@ typedef ListNode *nodePointer;
 
 
 int concateList(nodePointer,nodePointer);
-nodePointer merge(nodePointer,nodePointer);
+void merge(nodePointer,nodePointer,nodePointer);
 void printList(nodePointer);
 int isEmpty(nodePointer);
 void insertSort(nodePointer,nodePointer);
@@ -45,9 +45,13 @@ int main(void)
 		startNodeTwo->nextNode = scdNode;
 	}
 	printList(startNodeTwo);
-	printf("Vai chamar o merge");
-	nodePointer newList = merge(startNode, startNodeTwo);
-	printList(newList);
+	//FIXME - we are having a problme here. The lasta function executated is the printlist.
+	//but after it, the program doesn't execute anything.
+	printf("ANTES DO MALLOC");
+	nodePointer thirdList = malloc(sizeof(ListNode));
+	printf("DEPOIS DO MALLOC");
+	merge(thirdList,startNode, startNodeTwo);
+	printList(thirdList);
 	printf("Executation finish!");
 	return 0;
 }
@@ -76,10 +80,9 @@ int concateList(nodePointer mainList, nodePointer secondList)
  * This function merge two list on a third one. The elements are insert in order
  *
  * */
-nodePointer merge(nodePointer firstList, nodePointer secondList)
+void merge(nodePointer newList, nodePointer firstList, nodePointer secondList)
 {
 	printf("entrou no merge");
-	nodePointer newList = malloc(sizeof(ListNode));
 	if(newList != NULL){
 		nodePointer currentNode = firstList;
 		printf("O valor do primeiro elemento eh -> %d", currentNode->value);
@@ -96,7 +99,6 @@ nodePointer merge(nodePointer firstList, nodePointer secondList)
 		printf("Elementos da segunda lista foram adicionados");
 	}
 	printf("final do merge");
-	return newList;
 }
 
 
