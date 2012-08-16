@@ -16,7 +16,7 @@ typedef ListNode *nodePointer;
 
 
 void concateList(nodePointer,nodePointer);
-void merge(nodePointer,nodePointer,nodePointer);
+nodePointer merge(nodePointer,nodePointer);
 void printList(nodePointer);
 int isEmpty(nodePointer);
 void insertSort(nodePointer,nodePointer);
@@ -37,10 +37,6 @@ int main(void)
 	printList(startNode);
 
 	startNodeTwo = malloc(sizeof(ListNode));
-	startNodeTwo->value = 3;
-	startNodeTwo->nextNode = NULL;
-	insertSort(startNode, startNodeTwo);
-	printList(startNode);
 	if(startNodeTwo != NULL){
 		startNodeTwo->value = 9;
 		nodePointer scdNode = malloc(sizeof(ListNode));
@@ -48,6 +44,9 @@ int main(void)
 		scdNode->nextNode = NULL;
 		startNodeTwo->nextNode = scdNode;
 	}
+	printList(startNodeTwo);
+	
+	printList(merge(startNode,startNodeTwo));
 	return 0;
 }
 /**
@@ -71,22 +70,27 @@ void concateList(nodePointer mainList, nodePointer secondList)
 
 /**
  * This function merge two list on a third one. The elements are insert in order
- * FIXME - This functions doesn't works how expected
- * */
-void merge(nodePointer newList, nodePointer firstList, nodePointer secondList)
+ */
+nodePointer merge(nodePointer firstList, nodePointer secondList)
 {
-	if(newList != NULL){
-		nodePointer currentNode = firstList;
-		while(currentNode != NULL){
-			insertSort(newList, currentNode);
-			currentNode = currentNode->nextNode;
-		}
-		currentNode = secondList;
-		while(currentNode != NULL){
-			insertSort(newList,currentNode);
-			currentNode = currentNode->nextNode;
-		}
+	nodePointer newList = NULL;
+	nodePointer mergeList = NULL;
+	if(firstList != NULL){
+		newList = firstList;
+		mergeList = secondList;
+	}else if(secondList != NULL){
+		newList = secondList;
+		mergeList = firstList;
 	}
+
+	nodePointer tempNode = NULL;
+	while(!isEmpty(mergeList)){
+		tempNode = mergeList->nextNode;
+		mergeList->nextNode = NULL;
+		insertSort(newList,mergeList);	
+		mergeList = tempNode;
+	}
+	return newList;
 }
 
 
@@ -111,7 +115,7 @@ void printList(nodePointer list)
 			printf("%d -> ", value);
 			currentNode = currentNode->nextNode;
 		}
-		printf(" NULL");
+		printf(" NULL\n");
 	}else{
 		printf("The list is empty, idiot!");
 	}
@@ -123,22 +127,23 @@ void printList(nodePointer list)
 void insertSort(nodePointer list,nodePointer element )
 {
 	nodePointer currentNode = list;
+	nodePointer nextNode = NULL;
 	while(currentNode != NULL){
-		if(element->value >= currentNode->value){
-			nodePointer tempNode = NULL;
-			if(currentNode->nextNode != NULL){
+		nextNode = currentNode->nextNode;
+		if(nextNode != NULL){
+			if((element->value >= currentNode->value) & (element->value <= (currentNode->nextNode)->value)){
+				nodePointer tempNode = NULL;
 				tempNode = currentNode->nextNode;
-			}
-			currentNode->nextNode = element;
-			if(tempNode != NULL){
+				currentNode->nextNode = element;
 				element->nextNode = tempNode;
+				return;
 			}
-			return;
+			currentNode = nextNode;
 		}else{
-			if(currentNode->nextNode != NULL){
-				currentNode = currentNode->nextNode;
-			}
+			currentNode->nextNode = element;
+			return;
 		}
 	}
+
 }
 
