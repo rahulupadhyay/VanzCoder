@@ -15,7 +15,7 @@ typedef struct node ListNode;
 typedef ListNode *nodePointer;
 
 
-int concateList(nodePointer,nodePointer);
+void concateList(nodePointer,nodePointer);
 void merge(nodePointer,nodePointer,nodePointer);
 void printList(nodePointer);
 int isEmpty(nodePointer);
@@ -37,34 +37,28 @@ int main(void)
 	printList(startNode);
 
 	startNodeTwo = malloc(sizeof(ListNode));
+	startNodeTwo->value = 3;
+	startNodeTwo->nextNode = NULL;
+	insertSort(startNode, startNodeTwo);
+	printList(startNode);
+	/*
 	if(startNodeTwo != NULL){
 		startNodeTwo->value = 9;
 		nodePointer scdNode = malloc(sizeof(ListNode));
 		scdNode->value = 2;
 		scdNode->nextNode = NULL;
 		startNodeTwo->nextNode = scdNode;
-	}
-	printList(startNodeTwo);
-	//FIXME - we are having a problme here. The lasta function executated is the printlist.
-	//but after it, the program doesn't execute anything.
-	printf("ANTES DO MALLOC");
-	nodePointer thirdList = malloc(sizeof(ListNode));
-	printf("DEPOIS DO MALLOC");
-	merge(thirdList,startNode, startNodeTwo);
-	printList(thirdList);
-	printf("Executation finish!");
+	}*/
 	return 0;
 }
-
 /**
  *This function contace the second list on the first one.
  *
  * */
-int concateList(nodePointer mainList, nodePointer secondList)
+void concateList(nodePointer mainList, nodePointer secondList)
 {
 	nodePointer currentNode = mainList;
-	nodePointer tempNode;
-	
+		
 	if(currentNode != NULL){
 		while(currentNode->nextNode != NULL){
 			currentNode = currentNode->nextNode;
@@ -78,14 +72,14 @@ int concateList(nodePointer mainList, nodePointer secondList)
 
 /**
  * This function merge two list on a third one. The elements are insert in order
- *
+ * FIXME - This functions doesn't works how expected
  * */
 void merge(nodePointer newList, nodePointer firstList, nodePointer secondList)
 {
-	printf("entrou no merge");
+	printf("ENTROU NO MERGE");
 	if(newList != NULL){
 		nodePointer currentNode = firstList;
-		printf("O valor do primeiro elemento eh -> %d", currentNode->value);
+		printf("O valor do primeiro elemento eh ");
 		while(currentNode != NULL){
 			insertSort(newList, currentNode);
 			currentNode = currentNode->nextNode;
@@ -135,12 +129,22 @@ void printList(nodePointer list)
  * */
 void insertSort(nodePointer list,nodePointer element )
 {
+	printf("ENTROU NO INSERT");
 	nodePointer currentNode = list;
-	if(currentNode != NULL){
-		while(1){
-			if(currentNode->nextNode  == NULL){
-				currentNode->nextNode = element;
-				return;
+	while(currentNode != NULL){
+		if(element->value >= currentNode->value){
+			nodePointer tempNode = NULL;
+			if(currentNode->nextNode != NULL){
+				tempNode = currentNode->nextNode;
+			}
+			currentNode->nextNode = element;
+			if(tempNode != NULL){
+				element->nextNode = tempNode;
+			}
+			return;
+		}else{
+			if(currentNode->nextNode != NULL){
+				currentNode = currentNode->nextNode;
 			}
 		}
 	}
