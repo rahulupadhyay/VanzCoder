@@ -41,14 +41,13 @@ int main(void)
 	startNodeTwo->nextNode = NULL;
 	insertSort(startNode, startNodeTwo);
 	printList(startNode);
-	/*
 	if(startNodeTwo != NULL){
 		startNodeTwo->value = 9;
 		nodePointer scdNode = malloc(sizeof(ListNode));
 		scdNode->value = 2;
 		scdNode->nextNode = NULL;
 		startNodeTwo->nextNode = scdNode;
-	}*/
+	}
 	return 0;
 }
 /**
@@ -76,23 +75,18 @@ void concateList(nodePointer mainList, nodePointer secondList)
  * */
 void merge(nodePointer newList, nodePointer firstList, nodePointer secondList)
 {
-	printf("ENTROU NO MERGE");
 	if(newList != NULL){
 		nodePointer currentNode = firstList;
-		printf("O valor do primeiro elemento eh ");
 		while(currentNode != NULL){
 			insertSort(newList, currentNode);
 			currentNode = currentNode->nextNode;
 		}
-		printf("Elementos da primeira lista foram adicionados");
 		currentNode = secondList;
 		while(currentNode != NULL){
 			insertSort(newList,currentNode);
 			currentNode = currentNode->nextNode;
 		}
-		printf("Elementos da segunda lista foram adicionados");
 	}
-	printf("final do merge");
 }
 
 
@@ -121,7 +115,6 @@ void printList(nodePointer list)
 	}else{
 		printf("The list is empty, idiot!");
 	}
-	printf("\nVai sair do print\n");
 }
 
 /**
@@ -129,7 +122,6 @@ void printList(nodePointer list)
  * */
 void insertSort(nodePointer list,nodePointer element )
 {
-	printf("ENTROU NO INSERT");
 	nodePointer currentNode = list;
 	while(currentNode != NULL){
 		if(element->value >= currentNode->value){
