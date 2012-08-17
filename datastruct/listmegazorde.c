@@ -4,6 +4,7 @@
  * */
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 struct node
 {
@@ -20,33 +21,11 @@ nodePointer merge(nodePointer,nodePointer);
 void printList(nodePointer);
 int isEmpty(nodePointer);
 void insertSort(nodePointer,nodePointer);
+void optList();
 
 int main(void)
 {
-	nodePointer startNode = NULL;
-	nodePointer startNodeTwo = NULL;
-
-	startNode = malloc(sizeof(ListNode));	
-	if(startNode != NULL){
-		startNode->value = 1;
-		nodePointer scdNode = malloc(sizeof(ListNode));
-		scdNode->value = 5;
-		scdNode->nextNode = NULL;
-		startNode->nextNode = scdNode;
-	}
-	printList(startNode);
-
-	startNodeTwo = malloc(sizeof(ListNode));
-	if(startNodeTwo != NULL){
-		startNodeTwo->value = 9;
-		nodePointer scdNode = malloc(sizeof(ListNode));
-		scdNode->value = 2;
-		scdNode->nextNode = NULL;
-		startNodeTwo->nextNode = scdNode;
-	}
-	printList(startNodeTwo);
-	
-	printList(merge(startNode,startNodeTwo));
+	optList();
 	return 0;
 }
 /**
@@ -123,6 +102,7 @@ void printList(nodePointer list)
 
 /**
  *This function insert a element in a list.
+ * FIXME - This functions doesn't work how expected with small lists.
  * */
 void insertSort(nodePointer list,nodePointer element )
 {
@@ -144,6 +124,34 @@ void insertSort(nodePointer list,nodePointer element )
 			return;
 		}
 	}
+
+}
+
+/**
+ * This function raffle 25 int elements for a list and calculates the sum and average for it.
+ */
+void optList()
+{
+	nodePointer list = NULL;
+	int index;
+	srand(time(NULL));
+	list = malloc(sizeof(ListNode));
+	list->value = rand()%100;
+	for(index = 1; index <= 24; index++){
+		nodePointer newNode = malloc(sizeof(ListNode));
+		newNode->value = rand()%100;
+		newNode->nextNode = NULL;
+		insertSort(list,newNode);
+	}
+	printList(list);
+	int sum = 0;
+	nodePointer currentNode = list;
+	while(currentNode != NULL){
+		sum += currentNode->value;
+		currentNode = currentNode->nextNode;
+	}
+	printf("\nThe sum of the list's elements is %d", sum);
+	printf("\nThe avarage of the list's elements is %f\n", ((float) sum / 25));
 
 }
 
