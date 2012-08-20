@@ -1,6 +1,6 @@
 /*
  *The source contais a lot os functions manipulating list
- *
+ * TODO - Improve all the algorithms. We have repeat code, and the algorithms aren't intelligent
  * */
 #include<stdio.h>
 #include<stdlib.h>
@@ -22,10 +22,13 @@ void printList(nodePointer);
 int isEmpty(nodePointer);
 void insertSort(nodePointer,nodePointer);
 void optList();
+void invertList();
+nodePointer createRandomList(int);
+void insertList(nodePointer, nodePointer);
 
 int main(void)
 {
-	optList();
+	invertList();
 	return 0;
 }
 /**
@@ -96,7 +99,7 @@ void printList(nodePointer list)
 		}
 		printf(" NULL\n");
 	}else{
-		printf("The list is empty, idiot!");
+		printf("\nThe list is empty, idiot!\n'");
 	}
 }
 
@@ -152,6 +155,74 @@ void optList()
 	}
 	printf("\nThe sum of the list's elements is %d", sum);
 	printf("\nThe avarage of the list's elements is %f\n", ((float) sum / 25));
+
+}
+
+/*
+ *This function create a list and after invert it on a another one
+ * */
+void invertList()
+{
+	/*Creating the first list*/
+	nodePointer list = createRandomList(10);
+	printf("\nThe origin list is: ");
+	printList(list);
+	/*Creating a new list inverting the first one*/
+	nodePointer invertedList = NULL;
+	nodePointer currentNode = list;
+	while(currentNode != NULL){
+		nodePointer tempNode = currentNode->nextNode;
+		currentNode->nextNode = NULL;
+		currentNode->nextNode = invertedList;
+		invertedList = currentNode;
+		currentNode = tempNode;
+		
+	}
+	printf("\nThe inverted list is: ");
+	printList(invertedList);
+	
+	
+}
+
+/*
+ *This function creat a list with random values between 0 and 100;
+ * The list's length is passed on the parameter
+ * */
+nodePointer createRandomList( int lenght)
+{
+	nodePointer list = NULL;
+	int index;
+	srand(time(NULL));
+	list = malloc(sizeof(ListNode));
+	list->value = rand()%100;
+	for(index = 1; index < lenght; index++){
+		nodePointer newNode = malloc(sizeof(ListNode));
+		newNode->value = rand()%100;
+		newNode->nextNode = NULL;
+		insertList(list,newNode);
+	}
+	return list;
+}
+
+/*
+ *This function insert a element on the end of the list
+ * */
+void insertList(nodePointer list, nodePointer newNode)
+{
+	nodePointer currentNode = list;
+	if(list == NULL){ /*It's the first node. The first insert on this list*/
+		list = newNode;
+		return;
+	}
+	while(currentNode != NULL){
+		if(currentNode->nextNode == NULL){
+			currentNode->nextNode = newNode;
+			return;
+		}else{
+			currentNode = currentNode->nextNode;
+		}
+	}
+	
 
 }
 
