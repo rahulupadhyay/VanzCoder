@@ -1,6 +1,9 @@
+CC = clang
+ARGS = -Wall
+
 all:
-	clang -Wall listmegazorde.c -o list
-	clang -Wall stack.c -o stack
+	$(CC) $(ARGS) ./list/listmegazorde.c -o listexe
+	$(CC) $(ARGS) ./stack/stack.c -o stackexe
 debug:
-	clang -Wall -g listmegazorde.c -o list
-	clang -Wall -g stack.c -o stack
+	$(CC) $(ARGS) -g ./list/listmegazorde.c -o listexe
+	$(CC) $(ARGS) -g ./stack/stack.c -o stackexe
