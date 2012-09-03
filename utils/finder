@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if (($# < 2 ))
+then
+	echo Usage: finder '['parttern ']' '['path']'
+	exit 0
+fi
+echo $1 
+	echo $2
+
+for file in $(find $2 -type f)
+do
+	echo Searching on $file
+	if grep $1 < $file
+	then
+		echo $file >> files.txt
+	fi
+done
+
+
+
+
