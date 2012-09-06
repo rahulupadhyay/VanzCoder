@@ -5,8 +5,6 @@ then
 	echo Usage: finder '['parttern ']' '['path']'
 	exit 0
 fi
-echo $1 
-	echo $2
 
 for file in $(find $2 -type f)
 do
