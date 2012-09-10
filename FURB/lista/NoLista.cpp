@@ -1,41 +1,29 @@
-/*Implementa o no da lista encadeada
- * Autor: José Guilherme Vanz*/
-#include <iostream>
-#include <string>
-using namespace std;
+/*
+ * NoLista.cpp
+ *
+ *  Created on: 10/09/2012
+ *      Author: vanz
+ */
 
-class NoLista
-{
+#include "NoLista.h"
 
-	private:
-		string valorNo;
-		NoLista *proximoNo;
+NoLista::NoLista() {
+	valor = "";
+	proximoNo = NULL;
+}
 
-		void setValor(string valor)
-		{
-			valorNo = valor;
-		}
+void NoLista::setValor(string novoValor) {
+	valor = novoValor;
+}
 
-		void setProximoNo(NoLista *no)
-		{
-			proximoNo = no;
-		}
+void NoLista::setProximoNo(NoLista* proximo) {
+	proximoNo = proximo;
+}
 
-	public:
-		NoLista(string valor, NoLista *proximo) /* Construtor da classe NoLista*/
-		{
-			setValor(valor);
-			setProximoNo(proximo);
-		}
+string NoLista::getValor() {
+	return valor;
+}
 
-		string getValor() /*Retorna valor do no*/
-		{
-			return valorNo;
-		}
-
-		NoLista getProximoNo() /*Retorna proximo no da lista*/
-		{
-				return *proximoNo;
-		}
-};
-
+NoLista NoLista::getProximoNo() {
+	return proximoNo;
+}
