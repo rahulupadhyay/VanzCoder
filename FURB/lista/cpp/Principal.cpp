@@ -39,7 +39,6 @@ void Principal::getNomesCidades() {
 	cin >> entrada;
 	vector<string> valores;
 	stringsplit(entrada, ",", valores);
-	cout << valores.size() << endl;
 	for (int index = 0; index < valores.size(); index++) {
 		lista.addLista(valores[index]);
 	}
