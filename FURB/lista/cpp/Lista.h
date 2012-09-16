@@ -42,7 +42,7 @@ bool Lista::isEmpty() {
 }
 
 bool Lista::primeiraStringAntes(string s1, string s2) {
-	return s1 <= s2;
+	return s1.compare(s2) <= 0;
 }
 
 void Lista::addLista(string valor) {
