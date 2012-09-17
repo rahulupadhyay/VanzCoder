@@ -1,2 +1,2 @@
 all:
-	g++ *.cpp *.h -o lista
+	g++ Principal.cpp *.h -o lista
