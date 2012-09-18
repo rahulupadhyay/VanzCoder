@@ -1,0 +1,2 @@
+all:
+	fpc *.pas 
