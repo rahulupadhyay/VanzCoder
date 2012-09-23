@@ -1,7 +1,7 @@
 package NosLista is
 	type NoLista(<>) is tagged private; 
 	function make(valor_no : Integer) return NoLista;
-	function get_valor(This : NoLista) return Integer;
+	function get_valor(This : in NoLista) return Integer;
 
 private
 	type NoLista is tagged record
