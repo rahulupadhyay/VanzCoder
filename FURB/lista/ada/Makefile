@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-c -Wall
-FILES=principal.adb listas.adb
+FILES=principal.adb listas.adb noslista.adb
 
 all:
 	$(CC) $(CFLAGS) $(FILES)
