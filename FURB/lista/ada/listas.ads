@@ -14,6 +14,7 @@ type Lista(<>) is tagged private;
 	function make return Lista;
 	procedure adiciona(This : in out Lista; valor : Ada.Strings.Unbounded.Unbounded_String);
 	procedure imprime(This : in out Lista);
+	procedure limpar(This : in out Lista);
 
 private
 type Lista is tagged record

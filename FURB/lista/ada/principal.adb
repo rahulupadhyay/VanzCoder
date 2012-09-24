@@ -19,5 +19,5 @@ begin
 		l.adiciona(city);
 	end loop;
 	l.imprime;
-		
+	l.limpar;
 end Principal;

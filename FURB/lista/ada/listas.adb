@@ -77,4 +77,11 @@ package body Listas is
 		put_line("FIM DA LISTAGEM");
 	end imprime;
 
+
+
+	procedure limpar(This : in out Lista) is
+	begin
+		This.inicio := null;
+	end limpar;
+
 end Listas;
