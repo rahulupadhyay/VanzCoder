@@ -1,14 +1,19 @@
 With Listas; use Listas; -- clase de lista
-with noslista; use noslista;
-
-with Ada.Text_IO; use Ada.Text_IO;
+with Gnat.Io; use Gnat.Io;
 
 Procedure Principal is
-	l : Lista := make(1);
-	no : NoLista := make(1);
-
+	l : Lista := make;
+	city : String(1 .. 255);
+	len : Integer;
 begin
-	l.teste;
-	put_line(integer'image(no.get_valor));
-
+	put_line("L1221D25 - José Guilherme Vanz");
+	put_line("Informe o nome das cidades < ENTER vazio para finalizar >");
+	loop
+		Put("> ");
+		Get_Line(city,len);
+      		exit when len = 0;
+		l.adiciona(city);
+	end loop;
+	l.imprime;
+		
 end Principal;
