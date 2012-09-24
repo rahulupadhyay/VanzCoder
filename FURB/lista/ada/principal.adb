@@ -15,7 +15,7 @@ begin
 		Ada.Text_IO.Put("> ");
 		Ada.Text_IO.Get_Line(str,len);
       		exit when len = 0;
-		city := Ada.Strings.Unbounded.To_Unbounded_String(str);
+		city := Ada.Strings.Unbounded.To_Unbounded_String(str(1 .. len));
 		l.adiciona(city);
 	end loop;
 	l.imprime;
