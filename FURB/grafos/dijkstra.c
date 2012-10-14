@@ -56,7 +56,7 @@ void aplicaDijkstra()
 				matrixDijkstra[i][2] = 1;
 				matrixDijkstra[i][3] = 0;
 			}
-			matrixDijkstra[origem-66][0] = 0;
+			matrixDijkstra[origem-65][0] = 0;
 			
 			int x,y = 0;
 			for(x = 0; x < numVertices; x++){
@@ -69,7 +69,7 @@ void aplicaDijkstra()
 			while(1){
 				int index,processar = 0;
 				for(index = 0; index < numVertices; index++){
-					if(matrixDijkstra[index][3] == 0 )
+					if(matrixDijkstra[index][2])
 					processar = 1;
 				}
 				if(!processar)
@@ -77,7 +77,7 @@ void aplicaDijkstra()
 				/*----------------Pega minimo-------------------------*/
 				int min = -1;
 				for(index = 0; index < numVertices; index++){
-					if(!matrixDijkstra[index][3]){
+					if(matrixDijkstra[index][2]){
 						if((min == -1) | (matrixDijkstra[index][0] < min)){
 							pivo = index;
 							min = matrixDijkstra[index][0];
@@ -86,13 +86,14 @@ void aplicaDijkstra()
 				}
 				/*-------------------------------------------------------*/
 				matrixDijkstra[pivo][3] = 1; /*Processado*/
+				matrixDijkstra[pivo][2] = 0;
 				/*----- Percorre adjacentes -----*/
 				printf("PIVO = %c\n",(pivo + 65));
 				int adj;
 				for(adj = 0; adj < numVertices; adj++ ){
-					if(matrixAdj[pivo][adj] >= 0 & pivo != adj ){
-						printf("Custo atual = %d ----- Custo calculado = %d\n", matrixDijkstra[adj][0], (matrixDijkstra[pivo][0] + matrixAdj[pivo][adj]));
-						if((matrixDijkstra[adj][0] != -1) | ( matrixDijkstra[adj][0] > (matrixDijkstra[pivo][0] + matrixAdj[pivo][adj]))){
+					if(matrixAdj[pivo][adj] >= 0 && pivo != adj ){
+						//printf("Custo atual = %d ----- Custo calculado = %d\n", matrixDijkstra[adj][0], (matrixDijkstra[pivo][0] + matrixAdj[pivo][adj]));
+						if((matrixDijkstra[adj][0] == -1) || ( matrixDijkstra[adj][0] > (matrixDijkstra[pivo][0] + matrixAdj[pivo][adj]))){
 							matrixDijkstra[adj][0] = matrixDijkstra[pivo][0] + matrixAdj[pivo][adj];
 							matrixDijkstra[adj][1] = pivo;
 							printf("Novo custo p/ %d = %d\n", adj,(matrixDijkstra[pivo][0] + matrixAdj[pivo][adj]));
@@ -103,8 +104,13 @@ void aplicaDijkstra()
 			}
 			printf("\n");
 			for(x = 0; x < numVertices; x++){
+				printf("%c -> ", (65 + x));
 				for(y = 0; y < 4; y++){	
-					printf("%3d ", matrixDijkstra[x][y]);
+					if(y == 1){
+						printf("%c", (matrixDijkstra[x][y]+65));
+					}else{
+						printf("%3d ", matrixDijkstra[x][y]);
+					}
 				}
 				printf("\n");
 			}
