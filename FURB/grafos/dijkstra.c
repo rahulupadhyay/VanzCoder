@@ -97,6 +97,24 @@ void aplicaDijkstra()
 					}
 				}
 			}
+			
+			/*----------------- Exibe camiho -----------------------*/
+			int caminho[numVertices];
+			memset(caminho,-1,sizeof(caminho));
+			int contador = 0;
+			int des = destino - 65;
+			while(matrixDijkstra[des][1] != -1){
+				caminho[contador] = des;
+				des = matrixDijkstra[des][1];
+				contador++;
+			}
+			caminho[contador] = des;
+			for(contador = numVertices-1; contador >= 0; contador--){
+				if(caminho[contador] != -1){
+					printf("-> %c", (caminho[contador] + 65));
+				}
+			}
+			printf("\nCusto = %d\n", matrixDijkstra[(destino-65)][0]);
 		}else{
 			printf("Erro na leitura do arquivo. Não foi possível ler o número de vértices na primeira linha.\n");
 		}		
