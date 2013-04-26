@@ -1,0 +1,16 @@
+ARQUIVOS
+
+I-node(index-node) = Estrutura que guarda informações a respeito do arquivo aberto.
+	
+Cada processo possui uma tabela dos arquivos abertos(TAA). Essa tabela aponta para uma tabela global de arquivos abertos.
+A tabela global de arquivos abertos aponta para a tabela de i-node.
+
+Quando um programa eh iniciado, o processo já vem com 3 arquivos abertos. São os stdin ( entrada padrão ), stdout ( saída padrão ) e o stderr ( saída de erro ). 
+
+PIPE
+
+O file descriptor é o index na tabela de arquivos abertos ( TAA ).
+
+Na TAA a posição 0 fica o stdin ( teclado, console )
+	 posição 1 fica o stdout ( video )
+	 posição 2 fica o stderr ( video )
