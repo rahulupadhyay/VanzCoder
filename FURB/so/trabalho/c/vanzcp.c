@@ -24,7 +24,12 @@ int main(int argc, char * arg[])
 			return -2;
 		}else{
 			printf("Copiando...\n");
-			copiar(origem, destino, arg[1], arg[2]);
+			if(!copiar(origem, destino, arg[1], arg[2])){
+				printf("Copiado com sucesso\n");
+				return 0;
+			}
+				printf("Erro durante a cópia\n");
+				return -1;
 		}
 	}
 
@@ -53,15 +58,15 @@ int copiar(DIR * origem, DIR * destinoi, char * pathOrigem, char * pathDestino)
 
 			int p = fork();
 			if(p == 0){ // processo filho
-				printf("FILE = %s \n", files->d_name);
 				if(files->d_type == DT_DIR){
-		        		strcat(argumentos," -r");
+					execl("/bin/cp", "cp", "-r", novoPathOrigem, novoPathDestino, (char*)NULL);
+					return -1;
 				}
-				printf("ARGUMENTOS = %s\n", argumentos);
-				printf("%d\n",execl("/bin/cp", "cp", argumentos));
-				return;
+				execl("/bin/cp", "cp", novoPathOrigem, novoPathDestino, (char*)NULL);
+				return -1;
 			}
 		}
 	}
+	return 0;
 }
 
