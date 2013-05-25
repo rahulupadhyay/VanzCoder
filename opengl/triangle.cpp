@@ -1,5 +1,6 @@
 #include <GLTools.h>
 #include <GLShaderManager.h>
+#include <GL/gl.h>
 #include <GL/glut.h>
 
 GLBatch triangleBatch;
