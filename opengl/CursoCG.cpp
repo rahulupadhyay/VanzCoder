@@ -19,6 +19,8 @@
 
 #include <glut.h>
 
+#include <WaveFrontUtils.h>
+
 void CreateBatch();
 
 // Classes auxiliares do GLTools
