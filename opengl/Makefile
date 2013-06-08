@@ -6,9 +6,12 @@ INCLUDE = -I$(INCDIR) -I$(INCDIR)GL -I/usr/include -I/usr/include/GL
 TOOLSSRC = $(INCPATH)GLTools.cpp $(INCPATH)GLShaderManager.cpp $(INCPATH)GLBatch.cpp $(INCPATH)glew.c $(INCPATH)GLTriangleBatch.cpp $(INCPATH)math3d.cpp
 CFLAGS =
 
+curso:
+	$(CC) $(CFLAGS) $(INCLUDE) -o curso $(TOOLSSRC)  CursoCG.cpp $(LIBS)
+
 triangle:
 	$(CC) $(CFLAGS) $(INCLUDE) -o triangle $(TOOLSSRC)  triangle.cpp $(LIBS)
 	
 
 clean:
-	
+	rm triangle curso
