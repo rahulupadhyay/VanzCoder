@@ -2,20 +2,20 @@
 # Author: José Guilherme Vanz < guilherme.sft@gmail.com >
 
 CC = g++# Compiler
-WFLAGS = -c -Wall -fpic# Waring flags
+WFLAGS = -fPIC -Wall -c # Waring flags
 CCFLAGS = $(WFLAGS)# All compiler flags 
-INCDIR = include/# Include directory for src 
+INCDIR = ../include/# Include directory for src 
 INCLUDE = -I$(INCDIR) -I$(INCDIR)/GL# All includes directory
-SRCPATH = src/# src directory
+SRCPATH = ../src/# src directory
 LIBS = -lglut -lGL -lGLU -lm# libs used
 FILES = $(SRCPATH)GLBatch.cpp $(SRCPATH)glew.c $(SRCPATH)GLShaderManager.cpp $(SRCPATH)GLTools.cpp $(SRCPATH)GLTriangleBatch.cpp $(SRCPATH)math3d.cpp # Files sources
 OFILES = GLBatch.o glew.o GLShaderManager.o GLTools.o GLTriangleBatch.o math3d.o
-SONAME = gltools.so
+SONAME = libgltools.so.1
 
 compile:
 	$(CC) $(CCFLAGS) $(INCLUDE) $(FILES) $(LIBS)
 so:
 	$(CC) -shared -o $(SONAME) $(OFILES)
-	cp $(SONAME) ../bin
+	cp $(SONAME) ../../bin
 clean:
 	rm $(OFILES) $(SONAME) 

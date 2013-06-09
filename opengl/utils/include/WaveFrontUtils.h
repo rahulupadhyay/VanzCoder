@@ -1,4 +1,8 @@
+#include <iostream>
+#include <fstream>
+
 #include <WaveFrontObj.h>
+#include <Utils.h>
 
 /**
 Classe utilitaria para trabalhar com arquivos Wavefront ( .obj )

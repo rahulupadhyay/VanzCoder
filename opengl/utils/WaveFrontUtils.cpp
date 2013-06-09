@@ -2,16 +2,22 @@
  * Author: José Guilherme Vanz <guilherme.sft@gmai.com>
  */
 
-#include <stdio.h>
-
 #include <WaveFrontUtils.h>
 
-WaveFrontObj WaveFrontUtils::LoadObj(char * path)
+WaveFrontObj WaveFrontUtils::LoadObj(const char * path)
 {
-	WaveFrontObj obj = NULL;
-	FILE * objFile = fopen(path,"r");
-	if(objFile){ // Verifica se arquivo existe
-			
+	WaveFrontObj obj;
+	ifstream objFile(path,std::ifstream::in);
+	if(objFile.is_open()){ // Verifica se arquivo esta aberto
+		while(objFile.good() && !objFile.eof()){
+			string linha;
+			getline(objFile, line);
+			if(linha.front() == 'v'){ // linha de vertex
+				vector<float> vertex = Utils::SplitStringToFloat(' ', linha);
+				obj.addVertex(vertex);
+			}
+		}
+		objFile.close();
 	}
 	return obj;
 }
