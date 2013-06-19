@@ -8,6 +8,8 @@
 
 #include <time.h>
 #include <iostream>
+#include <string>
+#include <fstream>
 
 // GLTools
 #include <GLTools.h>
@@ -49,6 +51,118 @@ int                 windowHeight = 600;         // Altura da janela
 clock_t             lastClock = clock();        // Ticks do relógio
 float               updateFrequency = 1.0;      // Frequencia de atualização da lógica do game, em segundos
 
+GLuint textureIndex1;
+GLuint textureIndex2;
+
+GLuint shaderID;
+GLuint uniformTextUnit;
+GLuint uniformMVPMatrix;
+
+using namespace std;
+
+string LoadFileToString(char * path)
+{
+	string file;
+	ifstream myfile (path);
+	if(myfile.is_open()){
+		while(myfile.good()){
+			getline (myfile,file);
+    		}
+		myfile.close();
+	}else{
+		 cout << "Unable to open file" << endl; 
+	}
+  	return file;
+}
+GLuint LoadTexture(const char * textureFileName, GLenum textureIndexUnit)
+{
+	GLuint texIndex = 0;
+	GLint textureWidth;
+	GLint textureHeight;
+	GLint components;
+	GLenum eFormat;
+	GLbyte * textureData = gltReadTGABits(textureFileName, &textureWidth, &textureHeight, &components, &eFormat);
+
+	glEnable(GL_TEXTURE_2D);
+	
+	glActiveTexture(textureIndexUnit);
+	glGenTextures(1, &texIndex);
+	glBindTexture(GL_TEXTURE_2D, texIndex);
+	glTexImage2D(GL_TEXTURE_2D, 0, components, textureWidth, textureHeight, 0, eFormat, GL_UNSIGNED_BYTE, textureData);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);	
+
+	free(textureData);
+	return texIndex;
+}
+
+GLuint LoadShader(std::string vertexShaderStr, std::string fragmentShaderStr)
+{
+	GLuint programID;
+	GLuint vertexShader;
+	GLuint fragmentShader;
+
+	GLint status;
+	char log[1024];
+
+
+	const char * vertexShaderChar = vertexShaderStr.c_str();
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertexShaderChar, NULL);
+	glCompileShader(vertexShader);
+
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
+	if(status == GL_FALSE){
+		glGetShaderInfoLog(vertexShader, 1024, NULL, log);
+		fprintf(stderr, "Vertex compile failed:\n%s\n", log);
+		glDeleteShader(vertexShader);
+		return 0;
+	}
+
+	const char * fragmentShaderChar = fragmentShaderStr.c_str();
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentShaderChar, NULL);
+	glCompileShader(fragmentShader);
+	
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
+	if(status == GL_FALSE){
+		glGetShaderInfoLog(fragmentShader, 1024, NULL, log);
+		fprintf(stderr, "Fragment compile failed:\n%s\n", log);
+		glDeleteShader(fragmentShader);
+		return 0;
+	}
+	programID = glCreateProgram();
+
+	glAttachShader(programID, vertexShader);
+	glAttachShader(programID, fragmentShader);
+
+	glBindAttribLocation(programID, GLT_ATTRIBUTE_VERTEX, "vVertex");
+	glBindAttribLocation(programID, GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+
+	glLinkProgram(programID);
+	
+	glGetProgramiv(programID, GL_LINK_STATUS, &status);
+	if(status == GL_FALSE){
+		glGetProgramInfoLog(programID, 1024, NULL, log);
+		fprintf(stderr, "Link failed:\n%s\n", log);
+		glDeleteProgram(programID);
+		return 0;
+	}
+	
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+
+	glUseProgram(programID);
+	uniformMVPMatrix = glGetUniformLocation(programID, "mvpMatrix");
+	uniformTextUnit = glGetUniformLocation(programID, "textureUnit0");
+
+	return programID;
+
+}
+
 /* KeyboardKeys */
 
 void KeyboardFunc(unsigned char key, int x, int y) {
@@ -87,6 +201,32 @@ void SpecialKeys(int key, int x, int y) {
 
 void GameRender(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); // Limpa os buffers e deixa com a cor definida
+
+
+    	shaderManager.UseStockShader(GLT_SHADER_SHADED, transformPipeline.GetModelViewProjectionMatrix());
+    	linesBatch.Draw();
+	axisBatch.Draw();
+	
+
+	glUseProgram(shaderID);
+	glUniformMatrix4fv(uniformMVPMatrix, 1, GL_FALSE, transformPipeline.GetModelViewProjectionMatrix());    
+	glUniform1i(uniformTextUnit, 0);
+
+	modelViewMatrix.PushMatrix();
+    	modelViewMatrix.Translate(10, 2, 10);
+    	shaderManager.UseStockShader(GLT_SHADER_SHADED, transformPipeline.GetModelViewProjectionMatrix());
+    	sphereBatch.Draw();
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D,textureIndex1);
+	
+	modelViewMatrix.PopMatrix();
+    	glutSwapBuffers();
+}
+
+/*
+void GameRender(void) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); // Limpa os buffers e deixa com a cor definida
     
     	// Desenha a cena
     	shaderManager.UseStockShader(GLT_SHADER_SHADED, transformPipeline.GetModelViewProjectionMatrix());
@@ -100,7 +240,7 @@ void GameRender(void) {
 
     	glutSwapBuffers();
 }
-
+*/
 
 /* CameraSetup */
 
@@ -174,7 +314,15 @@ void Init() {
     
     	// Inicializa o gerenciador de shaders
     	shaderManager.InitializeStockShaders();
-    
+   	textureIndex1 = LoadTexture("/home/vanz/gitroot/VanzCoder/opengl/data/texture/sun.tga", GL_TEXTURE0); 
+   	textureIndex2 = LoadTexture("/home/vanz/gitroot/VanzCoder/opengl/data/texture/earth.tga", GL_TEXTURE1); 
+
+	char * pathVShader = "/home/vanz/gitroot/VanzCoder/opengl/vertex.fsh";
+	char * pathFShader = "/home/vanz/gitroot/VanzCoder/opengl/fragment.fsh";
+	//std::string vertexShader = LoadFileToString(pathVShader);
+	//std::string fragmentShader = LoadFileToString(pathFShader);
+	//LoadShader(vertexShader, fragmentShader);
+
     	CreateBatch();
 }
 

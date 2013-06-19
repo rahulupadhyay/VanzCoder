@@ -4,6 +4,7 @@
 
 class Utils
 {
+public:
 	static std::vector<std::string> SplitString(const char delimiter, const std::string str);
 	static std::vector<float> SplitStringToFloat(const char delimiter, const std::string str);
 	template<class T>
@@ -14,4 +15,6 @@ class Utils
 		stream >> valor;
 		return valor;
 	}
+	static FILE LoadFile(std::string);
+	static std::string LoadFileToString(std::string);
 };

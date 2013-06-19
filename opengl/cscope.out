@@ -1,4 +1,4 @@
-cscope 15 $HOME/gitroot/VanzCoder/opengl               0002942865
+cscope 15 $HOME/gitroot/VanzCoder/opengl               0002945783
 	@CursoCG.cpp
 
 9 
@@ -37,97 +37,101 @@ cscope 15 $HOME/gitroot/VanzCoder/opengl               0002942865
 	~<glut.h
 >
 
-22 
+22 
+	~<WaveFrÚtUtžs.h
+>
+
+24 
 C»©eB©ch
 ();
 
-25 
+27 
 GLShad”Mªag”
  
 	gshad”Mªag”
 ;
 
-26 
+28 
 GLF¿me
  
 	gÿm”aF¿me
 ;
 
-27 
+29 
 GLFru¡um
  
 	gv›wFru¡um
 ;
 
-28 
+30 
 GLM©rixSck
  
 	gmod–V›wM©rix
 ;
 
-29 
+31 
 GLM©rixSck
  
 	g´ojeùiÚM©rix
 ;
 
-30 
+32 
 GLGeom‘ryT¿nsfÜm
  
 	gŒªsfÜmP–še
 ;
 
-33 
+35 
 M3DVeùÜ3f
  
 	ggCam”aPos™iÚ
  = {0.0f, 0.5f, 5.0f};
 
-34 
+36 
 M3DVeùÜ3f
  
 	ggCam”aLookAt
  = {0.0f, 0.0f, 0.0f};
 
-35 
+37 
 M3DVeùÜ3f
  
 	ggCam”aUp
  = {0.0f, 1.0f, 0.0f};
 
-36 
+38 
 GLæßt
  
 	ggCam”aYaw
  = 0.0f;
 
-40 
+42 
 GLB©ch
  
 	gaxisB©ch
 ;
 
-41 
+43 
 GLB©ch
  
 	glšesB©ch
 ;
 
-42 
+44 
 GLTrŸngËB©ch
  
 	g¥h”eB©ch
 ;
 
-45 
+47 
 	gwšdowWidth
  = 800;
 
-46 
+48 
 	gwšdowHeight
  = 600;
 
-47 
+49 
 þock_t
  
 	gÏ¡Clock
@@ -135,11 +139,163 @@ GLTrŸngËB©ch
 þock
 ();
 
-48 
+50 
 	gupd©eF»qu’cy
  = 1.0;
 
-52 
+52 
+GLušt
+ 
+	g‹xtu»Index
+;
+
+54 
+	$LßdTextu»
+(cÚ¡ * 
+‹xtu»FžeName
+)
+
+56 
+‹xtu»Index
+ = 0;
+
+57 
+GLšt
+ 
+‹xtu»Width
+;
+
+58 
+GLšt
+ 
+‹xtu»Height
+;
+
+59 
+GLšt
+ 
+compÚ’ts
+;
+
+60 
+GLšt
+ 
+eFÜm©
+;
+
+61 
+GLby‹
+ * 
+‹xtu»D©a
+ = 
+	`gÉR—dTGAB™s
+(
+‹xtu»FžeName
+, &
+‹xtu»Width
+, &
+‹xtu»Height
+, &
+compÚ’ts
+, &
+eFÜm©
+);
+
+63 
+	`glEÇbË
+(
+GL_TEXTURE_2D
+);
+
+65 
+	`glAùiveTextu»
+(
+GL_TEXTURE0
+);
+
+66 
+	`glG’Textu»s
+(1, &
+‹xtu»Index
+);
+
+67 
+	`glBšdTextu»
+(
+GL_TEXTURE_2D
+, 
+‹xtu»Index
+);
+
+68 
+	`glTexImage2D
+(
+GL_TEXTURE_2D
+, 0, 
+compÚ’ts
+, 
+‹xtu»Width
+, 
+‹xtu»Height
+, 0, 
+eFÜm©
+, 
+GL_UNSIGNED_BYTE
+, 
+‹xtu»D©a
+);
+
+70 
+	`glTexP¬am‘”i
+(
+GL_TEXTURE_2D
+, 
+GL_TEXTURE_MAG_FILTER
+, 
+GL_LINEAR
+);
+
+71 
+	`glTexP¬am‘”i
+(
+GL_TEXTURE_2D
+, 
+GL_TEXTURE_MIN_FILTER
+, 
+GL_LINEAR
+);
+
+72 
+	`glTexP¬am‘”i
+(
+GL_TEXTURE_2D
+, 
+GL_TEXTURE_WRAP_S
+, 
+GL_REPEAT
+);
+
+73 
+	`glTexP¬am‘”i
+(
+GL_TEXTURE_2D
+, 
+GL_TEXTURE_WRAP_T
+, 
+GL_REPEAT
+);
+
+75 
+	`ä“
+(
+‹xtu»D©a
+);
+
+76 
+	}
+}
+
+80 
 	$KeybßrdFunc
 (
 key
@@ -149,15 +305,15 @@ x
 y
 ) {
 
-54 
+82 
 key
 ) {
 
-62 
+90 
 	}
 }
 
-64 
+92 
 	$S³cŸlKeys
 (
 key
@@ -167,15 +323,15 @@ x
 y
 ) {
 
-65 
+93 
 key
 ) {
 
-66 
+94 
 GLUT_KEY_UP
 :
 
-67 
+95 
 gCam”aPos™iÚ
 [0] +ð
 	`cos
@@ -183,7 +339,7 @@ gCam”aPos™iÚ
 gCam”aYaw
 ) * 0.1f;
 
-68 
+96 
 gCam”aPos™iÚ
 [2] +ð
 	`sš
@@ -191,11 +347,11 @@ gCam”aPos™iÚ
 gCam”aYaw
 ) * 0.1f;
 
-70 
+98 
 GLUT_KEY_DOWN
 :
 
-71 
+99 
 gCam”aPos™iÚ
 [0] -ð
 	`cos
@@ -203,7 +359,7 @@ gCam”aPos™iÚ
 gCam”aYaw
 ) * 0.1f;
 
-72 
+100 
 gCam”aPos™iÚ
 [2] -ð
 	`sš
@@ -211,31 +367,31 @@ gCam”aPos™iÚ
 gCam”aYaw
 ) * 0.1f;
 
-74 
+102 
 GLUT_KEY_LEFT
 :
 
-75 
+103 
 gCam”aYaw
  -= 0.5f;
 
-77 
+105 
 GLUT_KEY_RIGHT
 :
 
-78 
+106 
 gCam”aYaw
  += 0.5f;
 
-81 
+109 
 	}
 }
 
-86 
+114 
 	$GameR’d”
 () {
 
-87 
+115 
 	`glCË¬
 (
 GL_COLOR_BUFFER_BIT
@@ -245,7 +401,7 @@ GL_DEPTH_BUFFER_BIT
 GL_STENCIL_BUFFER_BIT
 );
 
-90 
+118 
 shad”Mªag”
 .
 	`U£StockShad”
@@ -257,25 +413,25 @@ GLT_SHADER_SHADED
 	`G‘Mod–V›wProjeùiÚM©rix
 ());
 
-91 
+119 
 lšesB©ch
 .
 	`D¿w
 ();
 
-92 
+120 
 axisB©ch
 .
 	`D¿w
 ();
 
-95 
+123 
 mod–V›wM©rix
 .
 	`T¿n¦©e
 (10, 2, 10);
 
-96 
+124 
 shad”Mªag”
 .
 	`U£StockShad”
@@ -287,21 +443,47 @@ GLT_SHADER_SHADED
 	`G‘Mod–V›wProjeùiÚM©rix
 ());
 
-97 
+125 
 ¥h”eB©ch
 .
 	`D¿w
 ();
 
-99 
+127 
+	`glAùiveTextu»
+(
+GL_TEXTURE0
+);
+
+128 
+	`glBšdTextu»
+(
+GL_TEXTURE_2D
+,
+‹xtu»Index
+);
+
+130 
+shad”Mªag”
+.
+	`U£StockShad”
+(
+GLT_SHADER_TEXTURE_REPLACE
+, 
+ŒªsfÜmP–še
+.
+	`G‘Mod–V›wProjeùiÚM©rix
+());
+
+132 
 	`glutSw­Bufãrs
 ();
 
-100 
+133 
 	}
 }
 
-105 
+155 
 	$ChªgeSize
 (
 w
@@ -309,15 +491,15 @@ w
 h
 ) {
 
-106 ià(
+156 ià(
 h
  == 0) {
 
-107 
+157 
 h
  = 1;
 
-109 
+159 
 	`glV›wpÜt
 (0, 0, 
 w
@@ -325,19 +507,19 @@ w
 h
 );
 
-110 
+160 
 wšdowWidth
  = 
 w
 ;
 
-111 
+161 
 wšdowHeight
  = 
 h
 ;
 
-113 
+163 
 v›wFru¡um
 .
 	`S‘P”¥eùive
@@ -347,21 +529,21 @@ wšdowWidth
 wšdowHeight
 ), 0.01f, 5000.f);
 
-114 
+164 
 	}
 }
 
-116 
+166 
 	$Cam”aUpd©e
 () {
 
-117 
+167 
 ´ojeùiÚM©rix
 .
 	`LßdId’t™y
 ();
 
-118 
+168 
 ´ojeùiÚM©rix
 .
 	`LßdM©rix
@@ -371,13 +553,13 @@ v›wFru¡um
 	`G‘ProjeùiÚM©rix
 ());
 
-120 
+170 
 M3DVeùÜ3f
  
 fÜw¬dVeùÜ
  = {0.0f, 0.0f, 0.0f};
 
-122 
+172 
 gCam”aLookAt
 [0] = 
 gCam”aPos™iÚ
@@ -387,13 +569,13 @@ gCam”aPos™iÚ
 gCam”aYaw
 );
 
-123 
+173 
 gCam”aLookAt
 [1] = 
 gCam”aPos™iÚ
 [1];
 
-124 
+174 
 gCam”aLookAt
 [2] = 
 gCam”aPos™iÚ
@@ -403,7 +585,7 @@ gCam”aPos™iÚ
 gCam”aYaw
 );
 
-126 
+176 
 	`m3dSubŒaùVeùÜs3
 (
 fÜw¬dVeùÜ
@@ -413,13 +595,13 @@ gCam”aLookAt
 gCam”aPos™iÚ
 );
 
-127 
+177 
 	`m3dNÜm®izeVeùÜ3
 (
 fÜw¬dVeùÜ
 );
 
-129 
+179 
 ÿm”aF¿me
 .
 	`S‘Origš
@@ -427,7 +609,7 @@ fÜw¬dVeùÜ
 gCam”aPos™iÚ
 );
 
-130 
+180 
 ÿm”aF¿me
 .
 	`S‘FÜw¬dVeùÜ
@@ -435,7 +617,7 @@ gCam”aPos™iÚ
 fÜw¬dVeùÜ
 );
 
-131 
+181 
 ÿm”aF¿me
 .
 	`S‘UpVeùÜ
@@ -443,13 +625,13 @@ fÜw¬dVeùÜ
 gCam”aUp
 );
 
-133 
+183 
 M3DM©rix44f
  
 ÿm”aM©rix
 ;
 
-134 
+184 
 ÿm”aF¿me
 .
 	`G‘Cam”aM©rix
@@ -457,13 +639,13 @@ M3DM©rix44f
 ÿm”aM©rix
 );
 
-136 
+186 
 mod–V›wM©rix
 .
 	`LßdId’t™y
 ();
 
-137 
+187 
 mod–V›wM©rix
 .
 	`LßdM©rix
@@ -471,7 +653,7 @@ mod–V›wM©rix
 ÿm”aM©rix
 );
 
-138 
+188 
 ŒªsfÜmP–še
 .
 	`S‘M©rixScks
@@ -481,23 +663,23 @@ mod–V›wM©rix
 ´ojeùiÚM©rix
 );
 
-139 
+189 
 	}
 }
 
-143 
+193 
 	$GameLogic
 () {
 
-145 
+195 
 	}
 }
 
-149 
+199 
 	$MašCyþe
 (){
 
-150 
+200 
 þock_t
  
 nowClock
@@ -505,7 +687,7 @@ nowClock
 	`þock
 ();
 
-153 
+203 
 Ï¡TimeUpd©e
  = ((()
 nowClock
@@ -515,69 +697,69 @@ nowClock
 CLOCKS_PER_SEC
  * 100);
 
-156 if(
+206 if(
 Ï¡TimeUpd©e
  > 
 upd©eF»qu’cy
 ){
 
-157 
+207 
 	`GameLogic
 ();
 
-158 
+208 
 Ï¡Clock
  = 
 nowClock
 ;
 
-161 
+211 
 	`Cam”aUpd©e
 ();
 
-162 
+212 
 	`GameR’d”
 ();
 
-163 
+213 
 	}
 }
 
-168 
+218 
 	$In™
 () {
 
-169 
+219 
 	`glCË¬CÞÜ
 (0.3f, 0.3f, 0.3f, 1.0f );
 
-170 
+220 
 	`glEÇbË
 (
 GL_DEPTH_TEST
 );
 
-171 
+221 
 	`glEÇbË
 (
 GL_CULL_FACE
 );
 
-174 
+224 
 shad”Mªag”
 .
 	`In™ŸlizeStockShad”s
 ();
 
-176 
+226 
 	`C»©eB©ch
 ();
 
-177 
+227 
 	}
 }
 
-181 
+231 
 	$maš
 (
 ¬gc
@@ -585,7 +767,7 @@ shad”Mªag”
 ¬gv
 []){
 
-183 
+233 
 	`glutIn™
 (&
 ¬gc
@@ -593,7 +775,7 @@ shad”Mªag”
 ¬gv
 );
 
-184 
+234 
 	`glutIn™Di¥ÏyMode
 (
 GLUT_DOUBLE
@@ -605,7 +787,7 @@ GLUT_DEPTH
 GLUT_STENCIL
 );
 
-185 
+235 
 	`glutIn™WšdowSize
 (
 wšdowWidth
@@ -613,41 +795,41 @@ wšdowWidth
 wšdowHeight
 );
 
-186 
+236 
 	`glutC»©eWšdow
 ("CursoCG");
 
-188 
+238 
 	`glutResh­eFunc
 (
 ChªgeSize
 );
 
-189 
+239 
 	`glutDi¥ÏyFunc
 (
 MašCyþe
 );
 
-190 
+240 
 	`glutIdËFunc
 (
 MašCyþe
 );
 
-191 
+241 
 	`glutS³cŸlFunc
 (
 S³cŸlKeys
 );
 
-192 
+242 
 	`glutKeybßrdFunc
 (
 KeybßrdFunc
 );
 
-194 
+244 
 GL’um
  
 ”r
@@ -655,13 +837,13 @@ GL’um
 	`gËwIn™
 ();
 
-196 ià(
+246 ià(
 GLEW_OK
  !ð
 ”r
 ) {
 
-197 
+247 
 	`årštf
 (
 ¡d”r
@@ -671,29 +853,29 @@ GLEW_OK
 ”r
 ));
 
-201 
+251 
 	`In™
 ();
 
-203 
+253 
 	`glutMašLoÝ
 ();
 
-207 
+257 
 	}
 }
 
-211 
+261 
 	$C»©eB©ch
 (){
 
-213 
+263 
 	`gÉMakeSph”e
 (
 ¥h”eB©ch
 , 1.0f, 26, 13);
 
-217 
+267 
 axisB©ch
 .
 	`Begš
@@ -701,85 +883,85 @@ axisB©ch
 GL_LINES
 , 6);
 
-220 
+270 
 axisB©ch
 .
 	`CÞÜ4f
 (1.0f, 0.0f, 0.0f, 1.0f);
 
-221 
+271 
 axisB©ch
 .
 	`V”‹x3f
 (0.0f,0.0f,0.0f);
 
-222 
+272 
 axisB©ch
 .
 	`CÞÜ4f
 (1.0f, 0.0f, 0.0f, 1.0f);
 
-223 
+273 
 axisB©ch
 .
 	`V”‹x3f
 (1.0f,0.0f,0.0f);
 
-226 
+276 
 axisB©ch
 .
 	`CÞÜ4f
 (0.0f, 1.0f, 0.0f, 1.0f);
 
-227 
+277 
 axisB©ch
 .
 	`V”‹x3f
 (0.0f,0.0f,0.0f);
 
-228 
+278 
 axisB©ch
 .
 	`CÞÜ4f
 (0.0f, 1.0f, 0.0f, 1.0f);
 
-229 
+279 
 axisB©ch
 .
 	`V”‹x3f
 (0.0f,1.0f,0.0f);
 
-232 
+282 
 axisB©ch
 .
 	`CÞÜ4f
 (0.0f, 0.0f, 1.0f, 1.0f);
 
-233 
+283 
 axisB©ch
 .
 	`V”‹x3f
 (0.0f,0.0f,0.0f);
 
-234 
+284 
 axisB©ch
 .
 	`CÞÜ4f
 (0.0f, 0.0f, 1.0f, 1.0f);
 
-235 
+285 
 axisB©ch
 .
 	`V”‹x3f
 (0.0f,0.0f,1.0f);
 
-236 
+286 
 axisB©ch
 .
 	`End
 ();
 
-239 
+289 
 lšesB©ch
 .
 	`Begš
@@ -787,17 +969,17 @@ lšesB©ch
 GL_LINES
 , 84);
 
-240 
+290 
 lšesB©ch
 .
 	`CÞÜ4f
 (0.5,0.5,0.5,1.0f);
 
-241 
+291 
 i
 =-10;i<=10;i++) {
 
-242 
+292 
 lšesB©ch
 .
 	`V”‹x3f
@@ -805,7 +987,7 @@ lšesB©ch
 i
 ,-1,-1000);
 
-243 
+293 
 lšesB©ch
 .
 	`V”‹x3f
@@ -813,7 +995,7 @@ lšesB©ch
 i
 ,-1,1000);
 
-244 
+294 
 lšesB©ch
 .
 	`V”‹x3f
@@ -821,7 +1003,7 @@ lšesB©ch
 i
 );
 
-245 
+295 
 lšesB©ch
 .
 	`V”‹x3f
@@ -829,17 +1011,85 @@ lšesB©ch
 i
 );
 
-247 
+297 
 lšesB©ch
 .
 	`End
 ();
 
-248 
+298 
 	}
 }
 
-	@include/GLTools/include/GL/glew.h
+	@commum/WaveFrontObj.cpp
+
+5 
+	~<WaveFrÚtObj.h
+>
+
+8 
+	gWaveFrÚtObj
+::
+addV”‹x
+(
+¡d
+::
+veùÜ
+<> 
+v”‹x
+)
+
+10 if(
+v”‹x
+){
+
+11 
+this
+->
+v”‹xes
+.
+push_back
+(
+v”‹x
+);
+
+	@commum/include/WaveFrontObj.h
+
+1 
+	~<veùÜ
+>
+
+3 þas 
+	cWaveFrÚtObj
+
+
+6 
+	m´iv©e
+:
+
+7 
+¡d
+::
+veùÜ
+< std::veùÜ<> > 
+v”‹xes
+;
+
+8 
+	mpublic
+:
+
+9 
+addV”‹x
+(
+¡d
+::
+veùÜ
+<> 
+v”‹x
+);
+
+	@lib/GLTools/include/GL/glew.h
 
 79 #iâdeà
 __gËw_h__
@@ -108421,7 +108671,7 @@ WINGDIAPI
 GLAPI
 
 
-	@include/GLTools/include/GL/glxew.h
+	@lib/GLTools/include/GL/glxew.h
 
 79 #iâdeà
 __glxew_h__
@@ -115575,7 +115825,7 @@ glxewG‘Ex‹nsiÚ
 __ýlu¥lus
 
 
-	@include/GLTools/include/GL/wglew.h
+	@lib/GLTools/include/GL/wglew.h
 
 55 #iâdeà
 __wgËw_h__
@@ -122263,7 +122513,7 @@ __ýlu¥lus
 GLEWAPI
 
 
-	@include/GLTools/include/GLBatch.h
+	@lib/GLTools/include/GLBatch.h
 
 32 #iâdeà
 __GL_BATCH__
@@ -122687,7 +122937,7 @@ M3DVeùÜ2f
 	gpTexCoÜds
 ;
 
-	@include/GLTools/include/GLBatchBase.h
+	@lib/GLTools/include/GLBatchBase.h
 
 29 #iâdeà
 __GL_BATCH_BASE__
@@ -122713,7 +122963,7 @@ vœtu®
 D¿w
 () = 0;
 
-	@include/GLTools/include/GLFrame.h
+	@lib/GLTools/include/GLFrame.h
 
 33 
 	~<m©h3d.h
@@ -124207,7 +124457,7 @@ vVeùÜSrc
 	}
 }
 
-	@include/GLTools/include/GLFrustum.h
+	@lib/GLTools/include/GLFrustum.h
 
 32 
 	~<m©h3d.h
@@ -125249,7 +125499,7 @@ M3DVeùÜ4f
 	gbÙtomPÏÃ
 ;
 
-	@include/GLTools/include/GLGeometryTransform.h
+	@lib/GLTools/include/GLGeometryTransform.h
 
 31 #iâdeà
 __GLT_GEOMETRY_PIPELINE
@@ -125465,7 +125715,7 @@ GLM©rixSck
 	g_mProjeùiÚ
 ;
 
-	@include/GLTools/include/GLMatrixStack.h
+	@lib/GLTools/include/GLMatrixStack.h
 
 32 #iâdeà
 __GLT_MATRIX_STACK
@@ -126267,7 +126517,7 @@ M3DM©rix44f
 	gpSck
 ;
 
-	@include/GLTools/include/GLShaderManager.h
+	@lib/GLTools/include/GLShaderManager.h
 
 31 #iâdeà
 __GLT_SHADER_MANAGER
@@ -126543,7 +126793,7 @@ uiStockShad”s
 GLT_SHADER_LAST
 ];
 
-	@include/GLTools/include/GLTools.h
+	@lib/GLTools/include/GLTools.h
 
 31 #iâdeà
 __GLTOOLS__LIBRARY
@@ -127097,7 +127347,7 @@ GLB©ch
 sü“nQuad
 );
 
-	@include/GLTools/include/GLTriangleBatch.h
+	@lib/GLTools/include/GLTriangleBatch.h
 
 45 #iâdeà
 __TRIANGLE_BATCH
@@ -127355,7 +127605,7 @@ GLušt
 	gv”‹xA¼ayBufãrObjeù
 ;
 
-	@include/GLTools/include/StopWatch.h
+	@lib/GLTools/include/StopWatch.h
 
 38 #iâdeà
 STOPWATCH_HEADER
@@ -127541,7 +127791,7 @@ timev®
 	gm_La¡CouÁ
 ;
 
-	@include/GLTools/include/math3d.h
+	@lib/GLTools/include/math3d.h
 
 41 #iâdeà
 _MATH3D_LIBRARY__
@@ -130503,7 +130753,7 @@ M3DVeùÜ3f
 vPoštInS·û
 );
 
-	@include/GLTools/src/GLBatch.cpp
+	@lib/GLTools/src/GLBatch.cpp
 
 33 #iâdeà
 __GLT_BATCH
@@ -132435,7 +132685,7 @@ i
 	}
 }
 
-	@include/GLTools/src/GLShaderManager.cpp
+	@lib/GLTools/src/GLShaderManager.cpp
 
 31 
 	~<GLShad”Mªag”.h
@@ -134465,7 +134715,7 @@ uiShad”ID
 	}
 }
 
-	@include/GLTools/src/GLTools.cpp
+	@lib/GLTools/src/GLTools.cpp
 
 36 
 	~<GLToÞs.h
@@ -141519,7 +141769,7 @@ sü“nQuad
 	}
 }
 
-	@include/GLTools/src/GLTriangleBatch.cpp
+	@lib/GLTools/src/GLTriangleBatch.cpp
 
 46 
 	~<GLTrŸngËB©ch.h
@@ -142381,7 +142631,7 @@ GLT_ATTRIBUTE_TEXTURE0
 	}
 }
 
-	@include/GLTools/src/glew.c
+	@lib/GLTools/src/glew.c
 
 32 
 	~<GL/gËw.h
@@ -223319,7 +223569,7 @@ GLXEW_SUN_video_»size
 	}
 }
 
-	@include/GLTools/src/math3d.cpp
+	@lib/GLTools/src/math3d.cpp
 
 45 
 	~<m©h3d.h
@@ -227926,6 +228176,330 @@ GLEW_OK
 63 
 	}
 }
+
+	@utils/Utils.cpp
+
+1 
+	~<Utžs.h
+>
+
+3 
+	g¡d
+::
+veùÜ
+<
+¡ršg
+> 
+Utžs
+::
+S¶™SŒšg
+(
+d–im™”
+, 
+¡d
+::¡ršg 
+¡r
+)
+
+5 
+¡d
+::
+veùÜ
+<
+¡ršg
+> 
+¥l™edSŒšg
+ = 
+¡r
+.
+¥l™
+(
+d–im™”
+);
+
+6  
+	g¥l™edSŒšg
+;
+
+9 
+	g¡d
+::
+veùÜ
+<> 
+Utžs
+::
+S¶™SŒšgToFlßt
+(
+d–im™”
+, 
+¡d
+::
+¡ršg
+ 
+¡r
+)
+
+11 
+¡d
+::
+veùÜ
+<> 
+æßts
+;
+
+12 
+¡ršg
+ 
+	gs
+ : 
+Utžs
+::
+¥l™SŒšg
+(
+d–im™”
+,
+¡r
+)){
+
+13 
+	gUtžs
+::
+SŒšgToNumb”
+<>(
+s
+);
+
+15  
+	gæßts
+;
+
+	@utils/WaveFrontUtils.cpp
+
+5 
+	~<WaveFrÚtUtžs.h
+>
+
+7 
+WaveFrÚtObj
+ 
+	gWaveFrÚtUtžs
+::
+	$LßdObj
+(cÚ¡ * 
+·th
+)
+
+9 
+WaveFrÚtObj
+ 
+obj
+;
+
+10 
+if¡»am
+ 
+	`objFže
+(
+·th
+,
+¡d
+::if¡»am::
+š
+);
+
+11 if(
+objFže
+.
+	`is_Ý’
+()){
+
+12 
+objFže
+.
+	`good
+(è&& !objFže.
+	`eof
+()){
+
+13 
+¡ršg
+ 
+lšha
+;
+
+14 
+	`g‘lše
+(
+objFže
+, 
+lše
+);
+
+15 if(
+lšha
+.
+	`äÚt
+() == 'v'){
+
+16 
+veùÜ
+<> 
+v”‹x
+ = 
+Utžs
+::
+	`S¶™SŒšgToFlßt
+(' ', 
+lšha
+);
+
+17 
+obj
+.
+	`addV”‹x
+(
+v”‹x
+);
+
+20 
+objFže
+.
+	`þo£
+();
+
+22  
+obj
+;
+
+23 
+	}
+}
+
+	@utils/include/Utils.h
+
+1 
+	~<¡ršg
+>
+
+2 
+	~<io¡»am
+>
+
+3 
+	~<veùÜ
+>
+
+5 þas 
+	cUtžs
+
+
+7 
+	m¡d
+::
+veùÜ
+<
+¡d
+::
+¡ršg
+> 
+S¶™SŒšg
+(cÚ¡ 
+d–im™”
+, cÚ¡ std::¡ršg 
+¡r
+);
+
+8 
+	m¡d
+::
+veùÜ
+<> 
+S¶™SŒšgToFlßt
+(cÚ¡ 
+d–im™”
+, cÚ¡ 
+¡d
+::
+¡ršg
+ 
+¡r
+);
+
+9 
+	m‹m¶©e
+<
+þass
+ 
+	mT
+>
+
+10 
+T
+ 
+SŒšgToNumb”
+(cÚ¡ 
+¡d
+::
+¡ršg
+& 
+numb”AsSŒšg
+)
+
+12 
+T
+ 
+v®Ü
+;
+
+13 
+	m¡d
+::
+¡ršg¡»am
+ 
+¡»am
+(
+numb”AsSŒšg
+);
+
+14 
+	m¡»am
+ >> 
+	mv®Ü
+;
+
+15  
+	mv®Ü
+;
+
+	@utils/include/WaveFrontUtils.h
+
+1 
+	~<io¡»am
+>
+
+2 
+	~<f¡»am
+>
+
+4 
+	~<WaveFrÚtObj.h
+>
+
+5 
+	~<Utžs.h
+>
+
+11 þas 
+	cWaveFrÚtUtžs
+
+
+14 
+WaveFrÚtObj
+ 
+LßdObj
+(* 
+·th
+);
 
 	@/usr/include/GL/gl.h
 
@@ -409778,30 +410352,36 @@ __END_DECLS
 .
 1
 /usr/include
-56
-1528
+62
+1596
 CursoCG.cpp
-include/GLTools/include/GL/glew.h
-include/GLTools/include/GL/glxew.h
-include/GLTools/include/GL/wglew.h
-include/GLTools/include/GLBatch.h
-include/GLTools/include/GLBatchBase.h
-include/GLTools/include/GLFrame.h
-include/GLTools/include/GLFrustum.h
-include/GLTools/include/GLGeometryTransform.h
-include/GLTools/include/GLMatrixStack.h
-include/GLTools/include/GLShaderManager.h
-include/GLTools/include/GLTools.h
-include/GLTools/include/GLTriangleBatch.h
-include/GLTools/include/StopWatch.h
-include/GLTools/include/math3d.h
-include/GLTools/src/GLBatch.cpp
-include/GLTools/src/GLShaderManager.cpp
-include/GLTools/src/GLTools.cpp
-include/GLTools/src/GLTriangleBatch.cpp
-include/GLTools/src/glew.c
-include/GLTools/src/math3d.cpp
+commum/WaveFrontObj.cpp
+commum/include/WaveFrontObj.h
+lib/GLTools/include/GL/glew.h
+lib/GLTools/include/GL/glxew.h
+lib/GLTools/include/GL/wglew.h
+lib/GLTools/include/GLBatch.h
+lib/GLTools/include/GLBatchBase.h
+lib/GLTools/include/GLFrame.h
+lib/GLTools/include/GLFrustum.h
+lib/GLTools/include/GLGeometryTransform.h
+lib/GLTools/include/GLMatrixStack.h
+lib/GLTools/include/GLShaderManager.h
+lib/GLTools/include/GLTools.h
+lib/GLTools/include/GLTriangleBatch.h
+lib/GLTools/include/StopWatch.h
+lib/GLTools/include/math3d.h
+lib/GLTools/src/GLBatch.cpp
+lib/GLTools/src/GLShaderManager.cpp
+lib/GLTools/src/GLTools.cpp
+lib/GLTools/src/GLTriangleBatch.cpp
+lib/GLTools/src/glew.c
+lib/GLTools/src/math3d.cpp
 triangle.cpp
+utils/Utils.cpp
+utils/WaveFrontUtils.cpp
+utils/include/Utils.h
+utils/include/WaveFrontUtils.h
 /usr/include/GL/gl.h
 /usr/include/GL/glu.h
 /usr/include/GL/glut.h
