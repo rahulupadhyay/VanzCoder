@@ -5,5 +5,13 @@
 class Renderer
 {
 
+private:
+	int* screenWidth;
+	int* screenHeight;
+
+
+public:
+	void configureVideo();
+	void renderFrame();
 	
 };

@@ -3,3 +3,16 @@
 */
 
 #include "Renderer.h"
+
+
+
+void Renderer::configureVideo()
+{
+
+}
+
+
+void Renderer::renderFrame()
+{
+	
+}
