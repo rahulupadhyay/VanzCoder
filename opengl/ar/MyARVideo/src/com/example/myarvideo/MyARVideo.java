@@ -1,5 +1,6 @@
 package com.example.myarvideo;
 
+import com.example.opengl.OpenGLView;
 import com.qualcomm.QCAR.QCAR;
 
 import android.os.Bundle;
@@ -18,6 +19,8 @@ public class MyARVideo extends Activity {
 	
 	private int QCARFlags = QCAR.GL_20;
 	private boolean isRetrato;
+	
+	private OpenGLView view;
 
 	/* ---------- Native Methods ---------------- */
 	/*
@@ -73,7 +76,15 @@ public class MyARVideo extends Activity {
 	}
 	
 	private void initAR() {
-		// TODO Auto-generated method stub
+		// Create OpenGL ES view:
+				int depthSize = 16;
+				int stencilSize = 0;
+				boolean translucent = QCAR.requiresAlpha();
+
+				this.view = new OpenGLView(this);
+				this.view.init(this.QCARFlags, translucent, depthSize, stencilSize);
+				
+				this.view.setRenderer(new OpelGLrender)
 		
 	}
 	private void atualizaOrientacao(){
