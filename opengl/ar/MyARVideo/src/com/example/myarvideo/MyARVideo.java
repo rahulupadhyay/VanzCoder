@@ -1,5 +1,6 @@
 package com.example.myarvideo;
 
+import com.example.opengl.OpenGLRender;
 import com.example.opengl.OpenGLView;
 import com.qualcomm.QCAR.QCAR;
 
@@ -35,6 +36,17 @@ public class MyARVideo extends Activity {
 	 * Inicia o tracker da imagem
 	 */
 	private native void initTracker();
+	
+	/*
+	 * Atualiza orientacao do device
+	 * */
+	public native void ehOrientacaoRetrato(boolean ehRetrato);
+	
+	/*
+	 * Métodos para inicar a parar a camera
+	 */
+	public native void startCamera();
+	public native void stopCamera();
 
 	/* ---------------------------------------- */
 
@@ -80,20 +92,21 @@ public class MyARVideo extends Activity {
 				int depthSize = 16;
 				int stencilSize = 0;
 				boolean translucent = QCAR.requiresAlpha();
-
 				this.view = new OpenGLView(this);
 				this.view.init(this.QCARFlags, translucent, depthSize, stencilSize);
-				
-				this.view.setRenderer(new OpelGLrender)
-		
+				this.view.setRenderer(new OpenGLRender(this));
+				this.setContentView(this.view);
+	
 	}
-	private void atualizaOrientacao(){
+	
+	public void atualizaOrientacao(){
 		Configuration config = getResources().getConfiguration();
 		if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 			this.isRetrato = true;
 		}else{
 			this.isRetrato = false;
 		}
+		this.ehOrientacaoRetrato(isRetrato);
 	}
 
 	private void storeScreenSizes() {
@@ -103,7 +116,13 @@ public class MyARVideo extends Activity {
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
 	}
-
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		this.storeScreenSizes();
+		this.atualizaOrientacao();
+	}
 	private void updateAppStatus(AppStatus status) {
 
 		switch (status) {
@@ -122,4 +141,6 @@ public class MyARVideo extends Activity {
 			break;
 		}
 	}
+	
+	
 }
