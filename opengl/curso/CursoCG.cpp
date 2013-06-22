@@ -118,6 +118,7 @@ void GameRender(void) {
     M3DMatrix44f *mvpMatrix = (M3DMatrix44f*)transformPipeline.GetModelViewProjectionMatrix();
     glUniformMatrix4fv(uniformMVPMatrix, 1, GL_FALSE, *mvpMatrix);
     glUniform1i(uniformTexUnit, 0);
+    shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, transformPipeline.GetModelViewProjectionMatrix(), 0);
     
     sphereBatch.Draw();
     
