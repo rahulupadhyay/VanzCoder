@@ -15,7 +15,7 @@ std::vector<float> Utils::SplitStringToFloat(char delimiter, std::string str)
 	return floats;
 }
 
-FILE LoadFile(std::string path)
+FILE* LoadFile(std::string path)
 {
 	// TODO - validação
 	FILE * file = fopen(path);
