@@ -12,8 +12,14 @@ void WaveFrontUtil::ReadObjFile(const char* path)
 		size_t len = 0;
         
 		while((readCount = getline(&line, &len, f)) != EOF){
-			if(line[0] == 'v'){
+			if(line[0] == 'v' & line[1] == ' '){
 				printf("LINHA COM VERTICE");
+			}else if(line[0] == 'v' & line[1] == 't'){
+				printf("COORDENADA DE TEXTURA");
+			}else if(line[0] == 'v' & line[1] == 'n'){
+				printf("NORMALS");
+			}else if(line[0] == 'f' & line[1] == ' '){
+				printf("FACE");
 			}
 		}
 		fclose(f);
