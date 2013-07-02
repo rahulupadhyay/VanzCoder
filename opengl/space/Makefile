@@ -9,7 +9,7 @@ TOOLSSRC = $(INCPATH)GLTools.cpp $(INCPATH)GLShaderManager.cpp $(INCPATH)GLBatch
 CFLAGS = -g
 
 curso:
-	$(CC) $(CFLAGS) $(INCLUDE) -o curso $(TOOLSSRC)  CursoCG.cpp $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDE) -o space $(TOOLSSRC)  Space.cpp $(LIBS)
 
 clean:
-	rm curso
+	rm space

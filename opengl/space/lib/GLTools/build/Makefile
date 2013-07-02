@@ -10,7 +10,7 @@ SRCPATH = ../src/# src directory
 LIBS = -lglut -lGL -lGLU -lm# libs used
 FILES = $(SRCPATH)GLBatch.cpp $(SRCPATH)glew.c $(SRCPATH)GLShaderManager.cpp $(SRCPATH)GLTools.cpp $(SRCPATH)GLTriangleBatch.cpp $(SRCPATH)math3d.cpp # Files sources
 OFILES = GLBatch.o glew.o GLShaderManager.o GLTools.o GLTriangleBatch.o math3d.o
-SONAME = libgltools.so.1
+SONAME = libgltools.so
 
 compile:
 	$(CC) $(CCFLAGS) $(INCLUDE) $(FILES) $(LIBS)
