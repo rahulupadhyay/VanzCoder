@@ -19,6 +19,8 @@
 
 #include <glut.h>
 
+#include "WaveFrontUtil.h"
+
 void CreateBatch();
 
 // Classes auxiliares do GLTools
@@ -256,7 +258,7 @@ int main(int argc, char* argv[]){
 	}
 
 	Init();
-    
+   	WaveFrontUtil::ReadObjFile("/home/vanz/gitroot/VanzCoder/opengl/space/data/asteroid.obj"); 
 	glutMainLoop();
 	return 0;
 }
