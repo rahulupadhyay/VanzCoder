@@ -8,6 +8,7 @@ void WaveFrontUtil::ReadObjFile(const char* path)
 	std::string line;
 	std::ifstream myfile(path);
 	if (myfile.is_open()){
+		Obj obj;
 		while ( myfile.good() ){
 			getline (myfile,line);
 			int lineType = -1;
@@ -50,9 +51,11 @@ void WaveFrontUtil::ReadObjFile(const char* path)
 
 			/*----------------------------------------------------------*/
 			if(lineType == 0){ // vertice
-				for (std::vector<std::string>::iterator it = strings.begin(); it != strings.end(); ++it){
-					std::cout << "\"" <<  *it << "\""  << std::endl;	
-				}
+				GLfloat x = atof(strings[0].c_str());
+				GLfloat y = atof(strings[1].c_str());
+				GLfloat z = atof(strings[2].c_str());
+				Vertex v(x,y,z);
+				obj.addVertex(v);
 			}else if(lineType == 1){ // coordenada texture
 
 			}else if(lineType == 2){ // normals
@@ -62,6 +65,9 @@ void WaveFrontUtil::ReadObjFile(const char* path)
 			}
 			
 		}
+		
+		std::cout << "first -> x = " << obj.getVertexes().front().GetX() << " | y = " << obj.getVertexes().front().GetY() << " | z = " << obj.getVertexes().front().GetZ()  << std::endl;
+		std::cout << "last> x = " << obj.getVertexes().back().GetX() << " | y = " << obj.getVertexes().back().GetY() << " | z = " << obj.getVertexes().back().GetZ()  << std::endl;
 	}
 
 /*

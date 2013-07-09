@@ -121,11 +121,13 @@ void GameRender(void) {
 # pragma mark GameLogic
 
 GLuint LoadTexture(const char* textureFileName){
+	return 0;
 }
 
 
 // #MOD - 1
 GLuint LoadShader(std::string vertexShaderStr, std::string fragmentShaderStr){
+	return 0;
 }
 
 

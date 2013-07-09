@@ -25,7 +25,7 @@ private:
 	std::list<Vertex> vertexes;
 
 public:
-	Obj();
+	Obj(){};
 	void addVertex(Vertex v);
 	std::list<Vertex> getVertexes();
 };
