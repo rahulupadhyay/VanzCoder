@@ -17,9 +17,10 @@
 #include <GLMatrixStack.h>
 #include <GLGeometryTransform.h>
 
-#include <glut.h>
+//#include <glut.h>
 
 #include "WaveFrontUtil.h"
+#include "Obj.h"
 
 void CreateBatch();
 

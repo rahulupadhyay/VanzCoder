@@ -1,8 +1,20 @@
 
 #include "WaveFrontUtil.h"
+#include "Obj.h"
 
 void WaveFrontUtil::ReadObjFile(const char* path)
 {
+
+	std::string line;
+	std::ifstream myfile(path);
+	if (myfile.is_open()){
+		while ( myfile.good() ){
+			getline (myfile,line);
+			std::cout << line << std::endl;
+		}
+	}
+
+/*
 	FILE *f = fopen(path, "rb");
 	std::string content;
     
@@ -24,4 +36,5 @@ void WaveFrontUtil::ReadObjFile(const char* path)
 		}
 		fclose(f);
 	}
+*/
 }

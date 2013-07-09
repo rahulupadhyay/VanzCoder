@@ -1,6 +1,8 @@
 
 #include <time.h>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 // GLTools
 #include <GLTools.h>
