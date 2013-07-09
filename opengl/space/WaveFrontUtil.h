@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+
 
 // GLTools
 #include <GLTools.h>

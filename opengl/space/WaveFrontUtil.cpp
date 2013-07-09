@@ -11,7 +11,9 @@ void WaveFrontUtil::ReadObjFile(const char* path)
 		while ( myfile.good() ){
 			getline (myfile,line);
 			int lineType = -1;
-			if(line[0] == 'v' & line[1] == ' '){
+			if(line[0] == '#'){
+				continue;
+			}else if(line[0] == 'v' & line[1] == ' '){
 				std::cout << "LINHA COM VERTICE" << std::endl;
 				lineType = 0;
 			}else if(line[0] == 'v' & line[1] == 't'){
@@ -32,8 +34,25 @@ void WaveFrontUtil::ReadObjFile(const char* path)
 				line.erase(line.length() - 1, 1);
 			}
 			std::cout << line << std::endl;
-			if(lineType == 0){ // vertice
+			/*-----------------------------------------------------------
+					Split string
+			------------------------------------------------------------*/
+			std::vector<std::string> strings;
+			std::size_t found = 0;
+			std::size_t newFound = std::string::npos;
+			while((newFound = line.find(' ', found)) != std::string::npos){
+				strings.push_back(line.substr(found, newFound));
+				line.erase(0,newFound+1);
+				found = 0;
+				newFound = std::string::npos;
+			}
+				strings.push_back(line.substr(found, newFound));
 
+			/*----------------------------------------------------------*/
+			if(lineType == 0){ // vertice
+				for (std::vector<std::string>::iterator it = strings.begin(); it != strings.end(); ++it){
+					std::cout << "\"" <<  *it << "\""  << std::endl;	
+				}
 			}else if(lineType == 1){ // coordenada texture
 
 			}else if(lineType == 2){ // normals
