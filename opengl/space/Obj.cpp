@@ -29,12 +29,33 @@ std::vector<GLfloat> Vertex::GetAxis()
 			OBJ CLASS
 ----------------------------------------------------------------*/
 
-void Obj::addVertex(Vertex v)
+void Obj::addVertex(M3DVector3f v)
 {
-	this->vertexes.push_back(v);
+//	this->vertexes.push_back(v);
+}
+
+void Obj::addVertex(GLfloat x, GLfloat y, GLfloat z)
+{
+	batch2.Vertex3f(x,y,z);
 }
 
 std::list<Vertex> Obj::getVertexes()
 {
 	 return this->vertexes;
+}
+
+void Obj::draw()
+{
+//	std::cout << "Draw()" << std::endl;
+//	glBegin(GL_TRIANGLE_STRIP);  
+//	for (std::list<Vertex>::iterator it = this->vertexes.begin(); it != this->vertexes.end(); it++){
+//		Vertex v = *it;
+//		glColor3f(v.GetX(), v.GetY(), v.GetZ());
+//	}
+//	for (int i = 0; i < this->vertexes.size(); i++){
+//		Vertex v = this->vertexes.at(i);
+//		glColor3f(v.GetX(), v.GetY(), v.GetZ());
+//	}
+//	glEnd();
+	
 }

@@ -5,9 +5,12 @@
 //  Created by DBAPPZ on 13/05/13.
 //  Copyright (c) 2013 Christian Hess. All rights reserved.
 //
-
 #include <time.h>
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include<stdio.h>
 
 // GLTools
 #include <GLTools.h>
@@ -16,39 +19,39 @@
 #include <GLFrame.h>
 #include <GLMatrixStack.h>
 #include <GLGeometryTransform.h>
+#include <boost/lexical_cast.hpp>
 
-//#include <glut.h>
-
-#include "WaveFrontUtil.h"
-#include "Obj.h"
+#include <glut.h>
 
 void CreateBatch();
+GLBatch* ReadObjFile(const char* path);
 
 // Classes auxiliares do GLTools
 GLShaderManager		shaderManager;     //The shader manager of GLTools
-GLFrame				cameraFrame;       //Frame of reference for the camera
-GLFrustum			viewFrustum;       //View frustum
+GLFrame			cameraFrame;       //Frame of reference for the camera
+GLFrustum		viewFrustum;       //View frustum
 GLMatrixStack		modelViewMatrix;   //Modelview Matrix
 GLMatrixStack		projectionMatrix;  //Projection Matrix
-GLGeometryTransform transformPipeline; //Geometry Transform Pipeline
+GLGeometryTransform 	transformPipeline; //Geometry Transform Pipeline
 
 // Parametros da camera
-M3DVector3f			gCameraPosition =   {0.0f, 0.5f, 5.0f};    //Camera position
-M3DVector3f			gCameraLookAt =     {0.0f, 0.0f, 0.0f};     //Reference point to look at
-M3DVector3f			gCameraUp =         {0.0f, 1.0f, 0.0f};	    //Camera up direction
-GLfloat				gCameraYaw =        0.0f;					//Carmera Yaw
+M3DVector3f		gCameraPosition =   {0.0f, 0.5f, 5.0f};    //Camera position
+M3DVector3f		gCameraLookAt =     {0.0f, 0.0f, 0.0f};     //Reference point to look at
+M3DVector3f		gCameraUp =         {0.0f, 1.0f, 0.0f};	    //Camera up direction
+GLfloat			gCameraYaw =        0.0f;					//Carmera Yaw
 
 
 // Batchs
-GLBatch				axisBatch;			// Batch de geometria dos eixos
-GLBatch				linesBatch;			// Batch de geometria das linhas
+GLBatch			axisBatch;			// Batch de geometria dos eixos
+GLBatch			linesBatch;			// Batch de geometria das linhas
 GLTriangleBatch		sphereBatch;        // Batch de geometria da esfera
+GLBatch*			nave;
 
 // Variaveis auxiliares
 int                 windowWidth = 800;          // Largura da janela
 int                 windowHeight = 600;         // Altura da janela
-clock_t             lastClock = clock();        // Ticks do relógio
-float               updateFrequency = 1.0;      // Frequencia de atualização da lógica do game, em segundos
+clock_t             lastClock = clock();        // Ticks do relÃ³gio
+float               updateFrequency = 1.0;      // Frequencia de atualizaÃ§Ã£o da lÃ³gica do game, em segundos
 
 
 // #MOD
@@ -108,8 +111,10 @@ void GameRender(void) {
 	shaderManager.UseStockShader(GLT_SHADER_SHADED, transformPipeline.GetModelViewProjectionMatrix());
 	linesBatch.Draw();
 	axisBatch.Draw();
-    
-	modelViewMatrix.PopMatrix();
+	std::cout << "vai desenhar a nave" << std::endl;
+//	sphereBatch.Draw();
+	nave->Draw();    
+
     
 	glutSwapBuffers();
 }
@@ -204,7 +209,7 @@ void MainCycle(void){
     // (TICKS_AGORA - ULTIMO_TICKS) / TICKS_POR_SEGUNDO * 100
     float lastTimeUpdate = (((float)nowClock - (float)lastClock) / CLOCKS_PER_SEC * 100);
     
-    // Verifica se deve atualizar a lógica
+    // Verifica se deve atualizar a lÃ³gica
     if(lastTimeUpdate > updateFrequency){
         GameLogic();
         lastClock = nowClock;
@@ -219,14 +224,15 @@ void MainCycle(void){
 /* Init */
 
 void Init() {
-	 glClearColor(0.3, 0.3, 0.3, 1.0);
+	glClearColor(0.3, 0.3, 0.3, 1.0);
 	glEnable(GL_DEPTH_TEST); // Habilita o buffer de teste de profundidade
 	glEnable(GL_CULL_FACE); // Habilita o culling de faces, por questoes de performance, desenhando apenas as faces da frente
     
     // Inicializa o gerenciador de shaders
-    shaderManager.InitializeStockShaders();
-    
-    CreateBatch();
+	shaderManager.InitializeStockShaders();
+	CreateBatch();
+	std::cout << "passou do createbatch" << std::endl;
+	
     
     // #MOD - add textureUnit
    // texture1Index = LoadTexture("/home/vanz/gitroot/VanzCoder/opengl/curso/data/texture/sun.tga");
@@ -239,7 +245,6 @@ void Init() {
 }
 
 /* Main */
-
 int main(int argc, char* argv[]){
 	
 	glutInit(&argc, argv);
@@ -261,7 +266,6 @@ int main(int argc, char* argv[]){
 	}
 
 	Init();
-   	WaveFrontUtil::ReadObjFile("/home/vanz/gitroot/VanzCoder/opengl/space/data/asteroid.obj"); 
 	glutMainLoop();
 	return 0;
 }
@@ -269,40 +273,120 @@ int main(int argc, char* argv[]){
 /* CreateBatch */
 
 void CreateBatch(){
-    // Cria uma esfera
-    gltMakeSphere(sphereBatch, 1.0f, 26, 13);
+	// Cria uma esfera
+	gltMakeSphere(sphereBatch, 1.0f, 26, 13);
     
-    // Cria os eixos
-    /* Initialise the axis batch with the vertices and color */
+	// Cria os eixos
+	/* Initialise the axis batch with the vertices and color */
 	axisBatch.Begin(GL_LINES, 6);
     
-    // x Axis
+	// x Axis
 	axisBatch.Color4f(1.0f, 0.0f, 0.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,0.0f,0.0f);
-    axisBatch.Color4f(1.0f, 0.0f, 0.0f, 1.0f);
+	axisBatch.Color4f(1.0f, 0.0f, 0.0f, 1.0f);
 	axisBatch.Vertex3f(1.0f,0.0f,0.0f);
     
 	// y Axis
-    axisBatch.Color4f(0.0f, 1.0f, 0.0f, 1.0f);
+	axisBatch.Color4f(0.0f, 1.0f, 0.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,0.0f,0.0f);
-    axisBatch.Color4f(0.0f, 1.0f, 0.0f, 1.0f);
+	axisBatch.Color4f(0.0f, 1.0f, 0.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,1.0f,0.0f);
     
 	// z Axis
-    axisBatch.Color4f(0.0f, 0.0f, 1.0f, 1.0f);
+	axisBatch.Color4f(0.0f, 0.0f, 1.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,0.0f,0.0f);
-    axisBatch.Color4f(0.0f, 0.0f, 1.0f, 1.0f);
+	axisBatch.Color4f(0.0f, 0.0f, 1.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,0.0f,1.0f);
 	axisBatch.End();
 
-    // Cria as linhas
+	// Cria as linhas
 	linesBatch.Begin(GL_LINES, 84);
 	linesBatch.Color4f(0.5,0.5,0.5,1.0f);
 	for (int i=-10;i<=10;i++) {
-        linesBatch.Vertex3f(100*i,-1,-1000);
-        linesBatch.Vertex3f(100*i,-1,1000);
-        linesBatch.Vertex3f(-1000,-1,100*i);
-        linesBatch.Vertex3f(1000,-1,100*i);
+        	linesBatch.Vertex3f(100*i,-1,-1000);
+	        linesBatch.Vertex3f(100*i,-1,1000);
+        	linesBatch.Vertex3f(-1000,-1,100*i);
+	        linesBatch.Vertex3f(1000,-1,100*i);
 	}
 	linesBatch.End();
+	
+	//carrega nave
+
+   	nave = ReadObjFile("/home/vanz/gitroot/VanzCoder/opengl/space/data/spaceship.obj"); 
+   	std::cout << "nave carregada" << std::endl;
+}
+
+GLBatch* ReadObjFile(const char* path)
+{
+
+	std::string line;
+	std::ifstream myfile(path);
+	if (myfile.is_open()){
+		GLBatch* obj = new GLBatch();
+		obj->Begin(GL_TRIANGLES,49,2);
+		while ( myfile.good() ){
+			getline (myfile,line);
+			int lineType = -1;
+			if(line[0] == '#'){
+				continue;
+			}else if(line[0] == 'v' & line[1] == ' '){
+				lineType = 0;
+			}else if(line[0] == 'v' & line[1] == 't'){
+				lineType = 1;
+			}else if(line[0] == 'v' & line[1] == 'n'){
+				lineType = 2;
+			}else if(line[0] == 'f' & line[1] == ' '){
+				lineType = 3;
+			}
+			line.erase(0,2);
+			if(line[0] == ' '){
+				line.erase(0,1);
+			}
+			if(line[line.length()-1] == ' '){
+				line.erase(line.length() - 1, 1);
+			}
+			/*-----------------------------------------------------------
+					Split string
+			------------------------------------------------------------*/
+			std::vector<std::string> strings;
+			std::size_t found = 0;
+			std::size_t newFound = std::string::npos;
+			while((newFound = line.find(' ', found)) != std::string::npos){
+				strings.push_back(line.substr(found, newFound));
+				line.erase(0,newFound+1);
+				found = 0;
+				newFound = std::string::npos;
+			}
+				strings.push_back(line.substr(found, newFound));
+
+			/*----------------------------------------------------------*/
+			if(lineType == 0){ // vertice
+				float x = boost::lexical_cast<float>(strings[0]);
+				float y = boost::lexical_cast<float>(strings[1]);
+				float z = boost::lexical_cast<float>(strings[2]);
+				std::cout << "x = " << x << " | y = " << y << " | z = " << z << std::endl;
+				obj->Color4f(1.0f, 0.0f, 0.0f, 1.0f);
+				obj->Vertex3f(x,y,z);
+			}else if(lineType == 1){ // coordenada texture
+				float v = boost::lexical_cast<float>(strings[0]);
+				float t = boost::lexical_cast<float>(strings[1]);
+				std::cout << "v = " << v << " | t = " << t << std::endl;
+				obj->MultiTexCoord2f(0,v,t);
+			}else if(lineType == 2){ // normals
+				float x = boost::lexical_cast<float>(strings[0]);
+				float y = boost::lexical_cast<float>(strings[1]);
+				float z = boost::lexical_cast<float>(strings[2]);
+				std::cout << "NORMAL -> x = " << x << " | y = " << y << " | z = " << z << std::endl;
+				obj->Normal3f(x,y,z);
+			}else if(lineType == 3){ // face
+				std::cout << "FACES -> 1 = " << strings[0] << " | 2 = " << strings[1] << " | 3 = " << strings[2] << std::endl;
+			}
+			
+		}
+		std::cout << " antes do end" << std::endl;
+		obj->End();
+		std::cout << "depois do end" << std::endl;
+		return obj;
+		
+	}
 }

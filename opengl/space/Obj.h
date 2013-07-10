@@ -2,6 +2,7 @@
 #include <list>
 #include <vector>
 #include <glut.h>
+#include <iostream>
 
 class Vertex
 {
@@ -23,9 +24,12 @@ class Obj
 {
 private:
 	std::list<Vertex> vertexes;
-
+	GLTriangleBatch batch;
+	GLBatch batch2;
 public:
 	Obj(){};
-	void addVertex(Vertex v);
+	void addVertex(M3DVector3f v);
+	void addVertex(GLfloat x, GLfloat y, GLfloat z);
 	std::list<Vertex> getVertexes();
+	void draw();
 };
