@@ -53,13 +53,16 @@ Obj* WaveFrontUtil::ReadObjFile(const char* path)
 				float x = lexical_cast<float>(strings[0]);
 				float y = lexical_cast<float>(strings[1]);
 				float z = lexical_cast<float>(strings[2]);
-				//float y = atof(strings[1].c_str());
-				//float z = atof(strings[2].c_str());
 				obj->addVertex(x,y,z);
 			}else if(lineType == 1){ // coordenada texture
-
+				float x = lexical_cast<float>(strings[0]);
+				float y = lexical_cast<float>(strings[1]);
+				obj->addTextureCoord(x,y);
 			}else if(lineType == 2){ // normals
-
+				float x = lexical_cast<float>(strings[0]);
+				float y = lexical_cast<float>(strings[1]);
+				float z = lexical_cast<float>(strings[2]);
+				obj->addNormal(x,y,z);
 			}else if(lineType == 3){ // face
 
 			}

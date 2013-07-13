@@ -29,19 +29,39 @@ std::vector<GLfloat> Vertex::GetAxis()
 			OBJ CLASS
 ----------------------------------------------------------------*/
 
-void Obj::addVertex(M3DVector3f v)
+void Obj::addVertex(float x, float y, float z)
 {
-//	this->vertexes.push_back(v);
+	this->vertexes.push_back(x);
+	this->vertexes.push_back(y);
+	this->vertexes.push_back(z);
 }
 
-void Obj::addVertex(GLfloat x, GLfloat y, GLfloat z)
+void Obj::addTextureCoord(float s, float t)
 {
-	batch2.Vertex3f(x,y,z);
+	this->textureCoord.push_back(s);
+	this->textureCoord.push_back(t);
 }
 
-std::list<Vertex> Obj::getVertexes()
+void Obj::addNormal(float x, float y, float z)
+{
+	this->normal.push_back(x);
+	this->normal.push_back(y);
+	this->normal.push_back(z);
+}
+
+std::list<float> Obj::getVertexes()
 {
 	 return this->vertexes;
+}
+
+std::list<float> Obj::getTextureCoord()
+{
+	return this->textureCoord;
+}
+
+std::list<float> Obj::getNormal()
+{
+	return this->normal;
 }
 
 void Obj::draw()

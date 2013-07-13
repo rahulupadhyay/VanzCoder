@@ -22,6 +22,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include <glut.h>
+#include "ObjParserWavefront.h"
 
 void CreateBatch();
 GLBatch* ReadObjFile(const char* path);
@@ -66,6 +67,14 @@ GLuint uniformMVPMatrix;
 // #MOD
 GLuint uniformTexUnit1;
 
+//***********************************************************************
+GLfloat		*vertices;
+GLuint		vbo_vertex;
+
+ObjFile		*objNave;
+
+
+//***********************************************************************
 
 /* KeyboardKeys */
 
@@ -111,10 +120,21 @@ void GameRender(void) {
 	shaderManager.UseStockShader(GLT_SHADER_SHADED, transformPipeline.GetModelViewProjectionMatrix());
 	linesBatch.Draw();
 	axisBatch.Draw();
-	std::cout << "vai desenhar a nave" << std::endl;
 //	sphereBatch.Draw();
-	nave->Draw();    
+//	nave->Draw();   
+	M3DVector4f color = {0.6, 0.1, 0.1, 1.0};
+    
+	// ESFERA VERMELHA
+	modelViewMatrix.PushMatrix();
+	modelViewMatrix.Translate(10, 2, 10);
+	shaderManager.UseStockShader(GLT_SHADER_FLAT, transformPipeline.GetModelViewProjectionMatrix(), color);
+	sphereBatch.Draw();
+	modelViewMatrix.PopMatrix(); 
 
+	glEnableVertexAttribArray(GLT_ATTRIBUTE_VERTEX);
+   	glBindBuffer(GL_VERTEX_ARRAY, vbo_vertex);
+    
+	glDrawArrays(GL_LINE_LOOP, 0, objNave->getCountVertices());
     
 	glutSwapBuffers();
 }
@@ -311,82 +331,92 @@ void CreateBatch(){
 	linesBatch.End();
 	
 	//carrega nave
+	ObjParserWavefront parser;
+	objNave = new ObjFile();
+  	parser.parse("/home/vanz/gitroot/VanzCoder/opengl/space/data/asteroid.obj", objNave); 
+	vertices = objNave->getVerticeArray();
+    glGenBuffers(1, &vbo_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertex);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) / sizeof(GLfloat), vertices, GL_STATIC_DRAW);
+    
+	glEnableVertexAttribArray(GLT_ATTRIBUTE_VERTEX);
+    
+//	glVertexAttribPointer(GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 3, 0);
+	glVertexAttribPointer(GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-   	nave = ReadObjFile("/home/vanz/gitroot/VanzCoder/opengl/space/data/spaceship.obj"); 
-   	std::cout << "nave carregada" << std::endl;
+	glDisableVertexAttribArray(GLT_ATTRIBUTE_VERTEX);
 }
 
-GLBatch* ReadObjFile(const char* path)
-{
+// ObjFile* ReadObjFile(const char* path)
+// {
 
-	std::string line;
-	std::ifstream myfile(path);
-	if (myfile.is_open()){
-		GLBatch* obj = new GLBatch();
-		obj->Begin(GL_TRIANGLES,49,2);
-		while ( myfile.good() ){
-			getline (myfile,line);
-			int lineType = -1;
-			if(line[0] == '#'){
-				continue;
-			}else if(line[0] == 'v' & line[1] == ' '){
-				lineType = 0;
-			}else if(line[0] == 'v' & line[1] == 't'){
-				lineType = 1;
-			}else if(line[0] == 'v' & line[1] == 'n'){
-				lineType = 2;
-			}else if(line[0] == 'f' & line[1] == ' '){
-				lineType = 3;
-			}
-			line.erase(0,2);
-			if(line[0] == ' '){
-				line.erase(0,1);
-			}
-			if(line[line.length()-1] == ' '){
-				line.erase(line.length() - 1, 1);
-			}
-			/*-----------------------------------------------------------
-					Split string
-			------------------------------------------------------------*/
-			std::vector<std::string> strings;
-			std::size_t found = 0;
-			std::size_t newFound = std::string::npos;
-			while((newFound = line.find(' ', found)) != std::string::npos){
-				strings.push_back(line.substr(found, newFound));
-				line.erase(0,newFound+1);
-				found = 0;
-				newFound = std::string::npos;
-			}
-				strings.push_back(line.substr(found, newFound));
+// 	std::string line;
+// 	std::ifstream myfile(path);
+// 	if (myfile.is_open()){
+// 		ObjFile* obj = new ObjFile();
+// 		while ( myfile.good() ){
+// 			getline (myfile,line);
+// 			int lineType = -1;
+// 			if(line[0] == '#'){
+// 				continue;
+// 			}else if(line[0] == 'v' & line[1] == ' '){
+// 				lineType = 0;
+// 			}else if(line[0] == 'v' & line[1] == 't'){
+// 				lineType = 1;
+// 			}else if(line[0] == 'v' & line[1] == 'n'){
+// 				lineType = 2;
+// 			}else if(line[0] == 'f' & line[1] == ' '){
+// 				lineType = 3;
+// 			}
+// 			line.erase(0,2);
+// 			if(line[0] == ' '){
+// 				line.erase(0,1);
+// 			}
+// 			if(line[line.length()-1] == ' '){
+// 				line.erase(line.length() - 1, 1);
+// 			}
+// 			/*-----------------------------------------------------------
+// 					Split string
+// 			------------------------------------------------------------*/
+// 			std::vector<std::string> strings;
+// 			std::size_t found = 0;
+// 			std::size_t newFound = std::string::npos;
+// 			while((newFound = line.find(' ', found)) != std::string::npos){
+// 				strings.push_back(line.substr(found, newFound));
+// 				line.erase(0,newFound+1);
+// 				found = 0;
+// 				newFound = std::string::npos;
+// 			}
+// 				strings.push_back(line.substr(found, newFound));
 
-			/*----------------------------------------------------------*/
-			if(lineType == 0){ // vertice
-				float x = boost::lexical_cast<float>(strings[0]);
-				float y = boost::lexical_cast<float>(strings[1]);
-				float z = boost::lexical_cast<float>(strings[2]);
-				std::cout << "x = " << x << " | y = " << y << " | z = " << z << std::endl;
-				obj->Color4f(1.0f, 0.0f, 0.0f, 1.0f);
-				obj->Vertex3f(x,y,z);
-			}else if(lineType == 1){ // coordenada texture
-				float v = boost::lexical_cast<float>(strings[0]);
-				float t = boost::lexical_cast<float>(strings[1]);
-				std::cout << "v = " << v << " | t = " << t << std::endl;
-				obj->MultiTexCoord2f(0,v,t);
-			}else if(lineType == 2){ // normals
-				float x = boost::lexical_cast<float>(strings[0]);
-				float y = boost::lexical_cast<float>(strings[1]);
-				float z = boost::lexical_cast<float>(strings[2]);
-				std::cout << "NORMAL -> x = " << x << " | y = " << y << " | z = " << z << std::endl;
-				obj->Normal3f(x,y,z);
-			}else if(lineType == 3){ // face
-				std::cout << "FACES -> 1 = " << strings[0] << " | 2 = " << strings[1] << " | 3 = " << strings[2] << std::endl;
-			}
+// 			----------------------------------------------------------
+// 			if(lineType == 0){ // vertice
+// 				float x = boost::lexical_cast<float>(strings[0]);
+// 				float y = boost::lexical_cast<float>(strings[1]);
+// 				float z = boost::lexical_cast<float>(strings[2]);
+// 		//		vertices.push_back(x);
+// 		//		vertices.push_back(y);
+// 		//		vertices.push_back(z);
+// 				std::cout << "x = " << x << " | y = " << y << " | z = " << z << std::endl;
+// 				//obj->Color4f(1.0f, 0.0f, 0.0f, 1.0f);
+// 				//obj->Vertex3f(x,y,z);
+// 			}else if(lineType == 1){ // coordenada texture
+// 				float v = boost::lexical_cast<float>(strings[0]);
+// 				float t = boost::lexical_cast<float>(strings[1]);
+// 				std::cout << "v = " << v << " | t = " << t << std::endl;
+// 				obj->MultiTexCoord2f(0,v,t);
+// 			}else if(lineType == 2){ // normals
+// 				float x = boost::lexical_cast<float>(strings[0]);
+// 				float y = boost::lexical_cast<float>(strings[1]);
+// 				float z = boost::lexical_cast<float>(strings[2]);
+// 				std::cout << "NORMAL -> x = " << x << " | y = " << y << " | z = " << z << std::endl;
+// 				obj->Normal3f(x,y,z);
+// 			}else if(lineType == 3){ // face
+// 				std::cout << "FACES -> 1 = " << strings[0] << " | 2 = " << strings[1] << " | 3 = " << strings[2] << std::endl;
+// 			}
 			
-		}
-		std::cout << " antes do end" << std::endl;
-		obj->End();
-		std::cout << "depois do end" << std::endl;
-		return obj;
+// 		}
+// 		return obj;
 		
-	}
-}
+// 	}
+// }

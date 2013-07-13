@@ -23,13 +23,17 @@ public:
 class Obj
 {
 private:
-	std::list<Vertex> vertexes;
-	GLTriangleBatch batch;
-	GLBatch batch2;
+	std::list<float> vertexes;
+	std::list<float> textureCoord;
+	std::list<float> normal;
 public:
 	Obj(){};
-	void addVertex(M3DVector3f v);
-	void addVertex(GLfloat x, GLfloat y, GLfloat z);
-	std::list<Vertex> getVertexes();
+	void addVertex(float x, float y, float z);
+	void addTextureCoord(float s, float t);
+	void addNormal(float x, float y, float z);
+	std::list<float> getVertexes();
+	std::list<float> getTextureCoord();
+	std::list<float> getNormal();
 	void draw();
 };
+
