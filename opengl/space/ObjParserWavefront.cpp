@@ -86,6 +86,7 @@ void ObjParserWavefront::parse(const char * arquivo, ObjFile* obj)
 			}
 			
 		}
+		obj->ready();
 		std::cout << "Total de vertices = " << obj->getCountVertices() << std::endl;
 		std::cout << "Total de texture coord = " << obj->getCountTextureCoord() << std::endl;
 		std::cout << "Total de normal = " << obj->getCountNormals() << std::endl;
@@ -153,13 +154,7 @@ std::vector<float> ObjFile::getNormal()
 void ObjFile::draw()
 {
 	//TODO
-	// glEnableClientState(GL_VERTEX_ARRAY);						// Enable vertex arrays
- // 	glEnableClientState(GL_NORMAL_ARRAY);						// Enable normal arrays
-	// glVertexPointer(3,GL_FLOAT,	0,Faces_Triangles);				// Vertex Pointer to triangle array
-	// glNormalPointer(GL_FLOAT, 0, normals);						// Normal pointer to normal array
-	// glDrawArrays(GL_TRIANGLES, 0, TotalConnectedTriangles);		// Draw the triangles
-	// glDisableClientState(GL_VERTEX_ARRAY);						// Disable vertex arrays
-	// glDisableClientState(GL_NORMAL_ARRAY);						// Disable normal arrays
+	this->batch.draw();
 }
 
 int ObjFile::getCountFaces()
@@ -190,4 +185,26 @@ GLfloat* ObjFile::getVerticeArray()
 		array[i] = this->vertices.at(i);
 	}
 	return array;
+}
+	
+void ObjFile::ready()
+{
+	for(int i = 0; i < this->vertices.size(); i = i+3){
+		M3DVector3f vertices[3] = {{this->vertices.at(i), this->vertices.at(i+1), this->vertices.at(i+2)},
+					   {this->vertices.at(i+3), this->vertices.at(i+4), this->vertices.at(i+5)},
+					   {this->vertices.at(i+6), this->vertices.at(i+7), this->vertices.at(i+8)}
+					  };
+		
+		M3DVector3f normal[3] = {{this->normal.at(i), this->normal.at(i+1), this->normal.at(i+2)},
+				         {this->normal.at(i+3), this->normal.at(i+4), this->normal.at(i+5)},
+				         {this->normal.at(i+6), this->normal.at(i+7), this->normal.at(i+8)}
+					}; 
+		M3DVector2f textura[3] = {{this->textureCoord.at(i), this->textureCoord.at(i+1)}, 
+					  {this->textureCoord.at(i+3), this->textureCoord.at(i+4)}, 
+				          {this->textureCoord.at(i+6), this->textureCoord.at(i+7)}
+					 };
+		
+		this->batch.AddTriangle(vertices, normal, textura);
+
+	}
 }

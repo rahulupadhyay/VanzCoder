@@ -1,3 +1,5 @@
+#ifndef __OBJPARSER_H__
+#define __OBJPARSER_H__
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -8,6 +10,14 @@
 #include <boost/algorithm/string.hpp>
 #include <glut.h>
 
+//#include <GLTools.h>
+//#include <GLShaderManager.h>    // Shader Manager Class
+//#include <GLFrustum.h>
+//#include <GLFrame.h>
+//#include <GLMatrixStack.h>
+//#include <GLGeometryTransform.h>
+#include <GLTriangleBatch.h>
+
 class ObjFile
 {
 private:
@@ -15,6 +25,7 @@ private:
 	std::vector<float> textureCoord;
 	std::vector<float> normal;
 	std::vector<int> faces;
+	GLTriangleBatch batch;        // Batch do obj
 public:
 	void addVertex(float x, float y, float z);
 	void addTextureCoord(float s, float t);
@@ -30,6 +41,7 @@ public:
 	int getCountNormals();
 	int getCountFaces();
 	GLfloat* getVerticeArray();
+	void ready();
 
 };
 
@@ -39,6 +51,6 @@ public:
 	void parse(const char * arquivo, ObjFile* obj);
 };
 
-
+#endif
 
 
