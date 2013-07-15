@@ -1,23 +1,3 @@
-/*
-
-    Copyright 2010 Etay Meiri
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-    Tutorial 04 - shaders
-*/
-
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
@@ -64,22 +44,9 @@ ObjFile* nave; // nave
 ObjFile* asteroid;  //asteroid
 
 //-------------------------------------
-
-
-GLuint VBO;
-
-
 GLdouble projection[16], modelview[16];
 
-// const char* pVS = "layout (location = 0) in vec3 Position;
-//                    void main(){
-//                         gl_Position = vec4(0.5 * Position.x, 0.5 * Position.y, Position.z, 1.0);
-//                    }";
-// const char* pFS = "out vec4 FragColor;
-//                     void main(){
-//                         FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-//                     }";
-
+GLuint VBO;
 
 void RenderSceneCB()
 {
@@ -120,16 +87,6 @@ void MainCycle()
     // glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     UpdateCamera();
     RenderSceneCB();
-}
-
-void CreateVertexBuffer()
-{
-    Vector3f Vertices[1];
-    Vertices[0] = Vector3f(0.0f, 0.0f, 0.0f);
-    
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
 }
 
  void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
@@ -193,18 +150,6 @@ void CreateVertexBuffer()
     glUseProgram(ShaderProgram);
 }
 
-void KeyboardFunc(unsigned char key, int x, int y) {
-    
-    switch(key) {
-        case 'a':
-            break;
-        case 'w':
-            break;
-        case 's':
-            break;
-    }
-}
-
 void SpecialKeys(int key, int x, int y) {
     switch(key) {
         std::cout << "Tecla precionada" << std::endl;
@@ -247,10 +192,8 @@ int main(int argc, char** argv)
     glutDisplayFunc(MainCycle);
     glutIdleFunc(MainCycle);
     glutSpecialFunc(SpecialKeys);
-    glutKeyboardFunc(KeyboardFunc);
+    //glutKeyboardFunc(KeyboardFunc);
 
-    
-    
     // Must be done after glut is initialized!
     GLenum res = glewInit();
     if (res != GLEW_OK) {
@@ -260,8 +203,7 @@ int main(int argc, char** argv)
     printf("GL version: %s\n", glGetString(GL_VERSION));
 
     init();
-    CreateVertexBuffer();
-    // CompileShaders();
     glutMainLoop();
     return 0;
 }
+

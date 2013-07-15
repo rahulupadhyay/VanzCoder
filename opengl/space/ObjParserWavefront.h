@@ -1,3 +1,5 @@
+#ifndef __OBJPARSER_H__
+#define __OBJPARSER_H__
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -55,6 +57,6 @@ public:
 	void parse(const char * arquivo, ObjFile* obj);
 };
 
-
+#endif
 
 
