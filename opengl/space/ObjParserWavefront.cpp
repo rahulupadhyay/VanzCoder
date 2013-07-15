@@ -3,7 +3,7 @@
 
 void ObjParserWavefront::parse(const char * arquivo, ObjFile* obj)
 {
-
+	std::cout << "Entrou no parse" << std::endl;
 	std::string line;
 	std::ifstream myfile(arquivo);
 	int totalVertice = 0;
@@ -95,6 +95,15 @@ void ObjParserWavefront::parse(const char * arquivo, ObjFile* obj)
 }
 
 
+ObjFile::ObjFile(const char* arquivoObj)
+{
+	ObjParserWavefront	parser;
+	parser.parse(arquivoObj,this);
+	geraTriangulos();
+	this->prepara();
+	
+}
+
 void ObjFile::addVertex(float x, float y, float z)
 {
 	this->vertices.push_back(x);
@@ -128,6 +137,35 @@ void ObjFile::addFace(int fv1, int ftc1, int fn1, int fv2, int ftc2, int fn2, in
 	this->faces.push_back(fv3);
 	this->faces.push_back(ftc3);
 	this->faces.push_back(fn3);
+
+	int vertice = (fv1-1)*3;
+	this->triangulos.push_back(this->vertices.at(vertice));   //x
+	this->triangulos.push_back(this->vertices.at(vertice+1)); //y
+	this->triangulos.push_back(this->vertices.at(vertice+2)); //z
+	vertice = (fv2-1)*3;
+	this->triangulos.push_back(this->vertices.at(vertice));   //x
+	this->triangulos.push_back(this->vertices.at(vertice+1)); //y
+	this->triangulos.push_back(this->vertices.at(vertice+2)); //z
+	vertice = (fv3-1)*3;
+	this->triangulos.push_back(this->vertices.at(vertice));   //x
+	this->triangulos.push_back(this->vertices.at(vertice+1)); //y
+	this->triangulos.push_back(this->vertices.at(vertice+2)); //z
+	//std::cout << "triangulo (" << fv1 << "," << fv2 << "," << fv3 << ")" << std::endl;
+
+	vertice = (ftc1-1)*2;
+	this->textura.push_back(this->textureCoord.at(vertice));   //x
+	this->textura.push_back(this->textureCoord.at(vertice+1)); //y
+	
+	vertice = (ftc2-1)*2;
+	this->textura.push_back(this->textureCoord.at(vertice));   //x
+	this->textura.push_back(this->textureCoord.at(vertice+1)); //y
+	
+	vertice = (ftc3-1)*2;
+	this->textura.push_back(this->textureCoord.at(vertice));   //x
+	this->textura.push_back(this->textureCoord.at(vertice+1)); //y
+	
+	
+
 }
 
 std::vector<int> ObjFile::getFaces()
@@ -152,19 +190,46 @@ std::vector<float> ObjFile::getNormal()
 
 void ObjFile::draw()
 {
-	//TODO
-	// glEnableClientState(GL_VERTEX_ARRAY);						// Enable vertex arrays
- // 	glEnableClientState(GL_NORMAL_ARRAY);						// Enable normal arrays
-	// glVertexPointer(3,GL_FLOAT,	0,Faces_Triangles);				// Vertex Pointer to triangle array
-	// glNormalPointer(GL_FLOAT, 0, normals);						// Normal pointer to normal array
-	// glDrawArrays(GL_TRIANGLES, 0, TotalConnectedTriangles);		// Draw the triangles
-	// glDisableClientState(GL_VERTEX_ARRAY);						// Disable vertex arrays
-	// glDisableClientState(GL_NORMAL_ARRAY);						// Disable normal arrays
+	// glutSolidCube(0.5);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertex);
+	glEnableVertexAttribArray(GLT_ATTRIBUTE_VERTEX);
+    
+    glVertexAttribPointer(GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 3, 0);
+    glDrawArrays(GL_TRIANGLES, 0, this->triangulos.size()*3);
+
+    glDisableVertexAttribArray(GLT_ATTRIBUTE_VERTEX);
+
+
+    this->checkErro("draw");
+    
+}
+
+void ObjFile::checkErro(std::string localErro)
+{
+    GLenum erro = glGetError();
+    if(erro != GL_NO_ERROR){
+    	std::string strErro;
+    	if(erro == GL_INVALID_ENUM){
+    		strErro = "GL_INVALID_ENUM";
+    	}else if(erro == GL_INVALID_VALUE){
+    		strErro = "GL_INVALID_VALUE";
+   		}else if(erro == GL_INVALID_OPERATION){
+   			strErro = "GL_INVALID_OPERATION";
+		}else if(erro == GL_INVALID_FRAMEBUFFER_OPERATION){
+			strErro = "GL_INVALID_FRAMEBUFFER_OPERATION";
+		}else if(erro == GL_OUT_OF_MEMORY){
+			strErro = "GL_OUT_OF_MEMORY";
+    	}else if(erro == GL_STACK_UNDERFLOW){
+    		strErro = "GL_STACK_UNDERFLOW";
+    	}else if(erro == GL_STACK_OVERFLOW){
+    		strErro = "GL_STACK_OVERFLOW";
+    	}
+    	std::cout << "ERROR em " << localErro << " = " << strErro << std::endl;
+    }
 }
 
 int ObjFile::getCountFaces()
 {
-	std::cout << "Total de elementos de face = " << this->faces.size() << std::endl;
 	return this->faces.size()/9;
 }
 
@@ -190,4 +255,43 @@ GLfloat* ObjFile::getVerticeArray()
 		array[i] = this->vertices.at(i);
 	}
 	return array;
+}
+
+void ObjFile::geraTriangulos()
+{
+	this->verticesTriangulo = new GLfloat[this->triangulos.size()];
+	for(int i = 0; i < this->triangulos.size(); i++){
+		verticesTriangulo[i] = this->triangulos.at(i);
+	}
+	std::cout << this->triangulos.size()/9 << " triangulos" << std::endl;
+
+	this->verticesTextura = new GLfloat[this->textura.size()];
+	for(int i = 0; i < this->textura.size(); i++){
+		verticesTextura[i] = this->textura.at(i);
+	}
+	
+}
+
+void ObjFile::prepara()
+{
+	std::cout << "prepara" << std::endl;
+	glGenBuffers(1, &vbo_vertex);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_vertex);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(this->verticesTriangulo), this->verticesTriangulo, GL_STATIC_DRAW);
+   	glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+
+
+    glDisableVertexAttribArray(GLT_ATTRIBUTE_VERTEX);
+
+    // glGenBuffers(1, &vbo_textures);
+    // glBindBuffer(GL_ARRAY_BUFFER, vbo_textures);
+    // glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * this->triangulos.size()*6, this->verticesTextura, GL_STATIC_DRAW);
+    
+    // glEnableVertexAttribArray(GLT_ATTRIBUTE_TEXTURE0);
+    
+    // glVertexAttribPointer(GLT_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 2, 0);
+    
+    // glDisableVertexAttribArray(GLT_ATTRIBUTE_TEXTURE0);
+    this->checkErro("prepara");
 }
