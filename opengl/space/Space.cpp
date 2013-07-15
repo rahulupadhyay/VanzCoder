@@ -3,7 +3,6 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include "math_3d.h"
 #include "ObjParserWavefront.h"
 
 void RenderSceneCB();
