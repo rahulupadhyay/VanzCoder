@@ -10,6 +10,8 @@ CFLAGS = -g
 
 curso:
 	$(CC) $(CFLAGS) $(INCLUDE) -o curso $(TOOLSSRC)  CursoCG.cpp $(LIBS)
+triangulo:
+	$(CC) $(CFLAGS) $(INCLUDE) -o triangulo $(TOOLSSRC)  triangle.cpp $(LIBS)
 
 clean:
 	rm curso
