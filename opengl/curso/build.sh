@@ -1,0 +1,2 @@
+rm jogo
+make jogo

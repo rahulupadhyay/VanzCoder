@@ -1,0 +1,26 @@
+Parte 1)
+-> 1) Carregar modelo da espaço nave e do asteróide (arquivos .obj);
+2) Desenhar os objetos utilizando GLBatch ou GLTrianglesBatch;
+
+Parte 2)
+1) Movimentar a espaço nave pelo mundo 3D;
+2) Implementar câmera de 1ª, 3ª pessoa e pontos fixos da cena;
+3) Criar vários asteróides com movimentação aleatória;
+4) Detectar colisão entre a nave e o asteróide e entre asteróides, fazendo os asteróides pararem assim que colidires;
+5) Criar implementação alternar entre câmeras através da tecla 'c' (minúsculo);
+
+Parte 3)
+1) Aplicar texturas nos objetos, implementando um código para carregar as mesmas com o OpenGL;
+2) Implementar código para carregar shaders e trocar a implementação para não utilizar mais o ShaderManager do GLTools;
+3) Implementar shaders de luz difusa e especular (Gouraud e Phong) e implementar a tecla 'S' (maiúsculo) para alternar entre shaders;
+
+Parte 4)
+1) Implementar carregamento de atributos de vértices utilizando Vertex Array Object;
+2) Não utilizar mais os comandos do GLTools para desenhar objetos;
+
+Parte 5) 
+Por vir...
+
+Parte 6)
+1) Implementar a nave espacial e os asteroids com tiro, som, textura etc. (Mais especificações por vir)
+
