@@ -18,6 +18,8 @@ blending:
 	$(CC) $(CFLAGS) $(INCLUDE) -o blending $(TOOLSSRC)  Blending.cpp $(LIBS)
 smoother:
 	$(CC) $(CFLAGS) $(INCLUDE) -o smoother $(TOOLSSRC)  Smoother.cpp $(LIBS)
+jogo:
+	$(CC) $(CFLAGS) $(INCLUDE) -o jogo $(TOOLSSRC) jogo.cpp $(LIBS)
 
 clean:
 	rm curso
