@@ -1,6 +1,6 @@
 Parte 1)
--> 1) Carregar modelo da espaço nave e do asteróide (arquivos .obj);
-2) Desenhar os objetos utilizando GLBatch ou GLTrianglesBatch;
+DONE - 1) Carregar modelo da espaço nave e do asteróide (arquivos .obj);
+DONE - 2) Desenhar os objetos utilizando GLBatch ou GLTrianglesBatch;
 
 Parte 2)
 1) Movimentar a espaço nave pelo mundo 3D;
