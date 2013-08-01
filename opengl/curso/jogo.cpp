@@ -21,7 +21,7 @@ void parse(const char * arquivo, GLBatch* batch);
 /*------------------------------------*/
 
 /*------------ Parametros da camera-----------*/
-M3DVector3f			gCameraPosition =   {0.0f, 0.5f, 5.0f};    //Camera position
+M3DVector3f			gCameraPosition =   {0.0f, 0.5f, -50.0f};    //Camera position
 M3DVector3f			gCameraLookAt =     {0.0f, 0.0f, 0.0f};     //Reference point to look at
 M3DVector3f			gCameraUp =         {0.0f, 1.0f, 0.0f};	    //Camera up direction
 GLfloat				gCameraYaw =        0.0f;					//Carmera Yaw
@@ -30,10 +30,10 @@ GLfloat				gCameraYaw =        0.0f;					//Carmera Yaw
 // Classes auxiliares do GLTools
 GLFrame				cameraFrame;       //Frame of reference for the camera
 GLFrustum			viewFrustum;       //View frustum
-GLMatrixStack		modelViewMatrix;   //Modelview Matrix
-GLMatrixStack		projectionMatrix;  //Projection Matrix
-GLGeometryTransform transformPipeline; //Geometry Transform Pipeline
-GLShaderManager shaderManager;
+GLMatrixStack			modelViewMatrix;   //Modelview Matrix
+GLMatrixStack			projectionMatrix;  //Projection Matrix
+GLGeometryTransform 		transformPipeline; //Geometry Transform Pipeline
+GLShaderManager 		shaderManager;
 
 /*------------------- Batches ----------------*/
 GLBatch triangleBatch;
@@ -103,12 +103,16 @@ void RenderScene()
 	GLfloat vRed[] = {1.0f, 0.0f, 0.0f, 1.0f};
 	shaderManager.UseStockShader(GLT_SHADER_IDENTITY, vRed);
 	//triangleBatch.Draw();
-
+	asteroidBatch->Draw();
 	glutSwapBuffers();
 }
 
 void CameraUpdate(void) 
 {
+	gluLookAt(gCameraPosition[0], gCameraPosition[1], gCameraPosition[2],
+        	  gCameraLookAt[0], gCameraLookAt[1], gCameraLookAt[2], 
+		  gCameraUp[0], gCameraUp[1], gCameraUp[2]);
+/*
    	projectionMatrix.LoadIdentity();
 	projectionMatrix.LoadMatrix (viewFrustum.GetProjectionMatrix());
     
@@ -131,6 +135,7 @@ void CameraUpdate(void)
 	modelViewMatrix.LoadIdentity();
 	modelViewMatrix.LoadMatrix(cameraMatrix);
 	transformPipeline.SetMatrixStacks(modelViewMatrix, projectionMatrix);
+*/
 }
 
 
@@ -145,8 +150,8 @@ int main(int argc, char * argv[])
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);
-	glutInitWindowSize(800,600);
-	glutCreateWindow("Triangle");
+	glutInitWindowSize(1024,768);
+	glutCreateWindow("Mother fucker space invaders 3D");
 	glutReshapeFunc(ChangeSize);
    	glutDisplayFunc(MainCycle);
 	glutIdleFunc(MainCycle);
