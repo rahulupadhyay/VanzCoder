@@ -18,11 +18,8 @@
 #include <GLGeometryTransform.h>
 
 #include <glut.h>
-#include <iostream>
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string.hpp>
-#include <fstream>
-#include <vector>
+
+#include "ObjFile.h"
 
 void CreateBatch();
 void parse(const char * arquivo, GLBatch* batch);
@@ -46,8 +43,8 @@ GLfloat				gCameraYaw =        0.0f;					//Carmera Yaw
 GLBatch				axisBatch;			// Batch de geometria dos eixos
 GLBatch				linesBatch;			// Batch de geometria das linhas
 GLTriangleBatch		sphereBatch;        // Batch de geometria da esfera
-GLBatch*				asteroidBatch;
-GLBatch*		spaceshipBatch;
+ObjFile*				asteroidBatch;
+ObjFile*		spaceshipBatch;
 
 // Variaveis auxiliares
 int                 windowWidth = 800;          // Largura da janela
@@ -113,8 +110,8 @@ void GameRender(void) {
  	shaderManager.UseStockShader(GLT_SHADER_SHADED, transformPipeline.GetModelViewProjectionMatrix());
  	linesBatch.Draw();
 	axisBatch.Draw();
-    	//asteroidBatch->Draw();
-	spaceshipBatch->Draw();
+    	asteroidBatch->Draw();
+	//spaceshipBatch->Draw();
 
     
 	// Translada e desenha a esfera
@@ -376,10 +373,8 @@ void Init() {
     
     shaderID = LoadShader(vertexShader, fragmentShader);
 	
-    asteroidBatch = new GLBatch();
-    parse("/home/vanz/gitroot/VanzCoder/opengl/curso/asteroid.obj", asteroidBatch);
-	spaceshipBatch = new GLBatch();
-   	parse("/home/vanz/gitroot/VanzCoder/opengl/curso/spaceship.obj", spaceshipBatch);
+	asteroidBatch = new ObjFile("/home/vanz/gitroot/VanzCoder/opengl/curso/asteroid.obj");
+	spaceshipBatch = new ObjFile("home/vanz/gitroot/VanzCoder/opengl/curso/spaceship.obj");
 }
 
 /* Main */

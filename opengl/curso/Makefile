@@ -9,7 +9,7 @@ TOOLSSRC = $(INCPATH)GLTools.cpp $(INCPATH)GLShaderManager.cpp $(INCPATH)GLBatch
 CFLAGS = -g
 
 curso:
-	$(CC) $(CFLAGS) $(INCLUDE) -o curso $(TOOLSSRC)  CursoCG.cpp $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDE) -o curso $(TOOLSSRC)  CursoCG.cpp ObjFile.cpp $(LIBS)
 triangulo:
 	$(CC) $(CFLAGS) $(INCLUDE) -o triangulo $(TOOLSSRC)  triangle.cpp $(LIBS)
 geotest:
