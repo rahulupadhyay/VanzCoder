@@ -58,10 +58,13 @@ int                 windowWidth = 800;          // Largura da janela
 int                 windowHeight = 600;         // Altura da janela
 clock_t             lastClock = clock();        // Ticks do relógio
 float               updateFrequency = 1.0;      // Frequencia de atualização da lógica do game, em segundos
-float		posicaoNave[3] = {10.0f, 0.0f, 0.0f};
+
+//variaveis para controle da nave
+float		posicaoNave[3] = {0.0f, 0.0f, 0.0f};
+const float	fatorMovimentacaoNave = 0.090f;
 
 //variaveis utilizadas para controlar movimentação dos asteroides
-GLfloat posicaoAsteroides[totalAsteroides * 3];
+GLfloat 	posicaoAsteroides[totalAsteroides * 3];
 float		anguloRotacaoAsteroid[totalAsteroides];
 
 // #MOD
@@ -94,17 +97,21 @@ void KeyboardFunc(unsigned char key, int x, int y) {
 void SpecialKeys(int key, int x, int y) {
 	switch(key) {
 		case GLUT_KEY_UP:
+			//posicaoNave[0] += fatorMovimentacaoNave;
 			gCameraPosition[0] += cos(gCameraYaw) * 0.1f;
 			gCameraPosition[2] += sin(gCameraYaw) * 0.1f;
 			break;
 		case GLUT_KEY_DOWN:
+			//posicaoNave[0] -= fatorMovimentacaoNave;
 			gCameraPosition[0] -= cos(gCameraYaw) * 0.1f;
 			gCameraPosition[2] -= sin(gCameraYaw) * 0.1f;
 			break;
 		case GLUT_KEY_LEFT:
+			//posicaoNave[2] -= fatorMovimentacaoNave;
 			gCameraYaw -= 0.5f;
 			break;
 		case GLUT_KEY_RIGHT:
+			//posicaoNave[2] += fatorMovimentacaoNave;
 			gCameraYaw += 0.5f;
             break;
 	}
@@ -123,8 +130,9 @@ void GameRender(void) {
  	linesBatch.Draw();
 	axisBatch.Draw();
 
-	//desenhaAsteroides();
+	desenhaAsteroides();
    	desenhaNave(); 
+
 	// Translada e desenha a esfera
 	modelViewMatrix.PushMatrix();
     
@@ -164,7 +172,7 @@ void desenhaAsteroides()
 	float color[4] = {1.0f, 0.0f, 0.0f, 1.0f};    	
 	while(contador < totalAsteroides){
 		modelViewMatrix.PushMatrix();
-//		modelViewMatrix.Translate(posicaoAsteroides[contador*3], posicaoAsteroides[(contador*3)+1], posicaoAsteroides[(contador*3)+2]);
+		modelViewMatrix.Translate(posicaoAsteroides[contador*3], posicaoAsteroides[(contador*3)+1], posicaoAsteroides[(contador*3)+2]);
 		modelViewMatrix.Rotate(anguloRotacaoAsteroid[contador], 0.0f, 1.0f, 0.0f);
     		shaderManager.UseStockShader(GLT_SHADER_FLAT, transformPipeline.GetModelViewProjectionMatrix(), color);
 		asteroides[contador]->Draw();
@@ -397,10 +405,10 @@ void movimentaRotacionaAsteroides()
 			anguloRotacaoAsteroid[contador] = 0.0f;
 		}
 		//movimentacao aleatoria
-		float fatorMovimentacao = 3.0f;
+		/*float fatorMovimentacao = 3.0f;
 		srand(time(NULL));
 		int eixo = rand() % 3;
-		posicaoAsteroides[(contador*3)+eixo] += fatorMovimentacao;
+		posicaoAsteroides[(contador*3)+eixo] += fatorMovimentacao;*/
 		contador++;
 	}
 	

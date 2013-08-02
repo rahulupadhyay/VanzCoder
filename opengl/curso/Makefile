@@ -20,6 +20,8 @@ smoother:
 	$(CC) $(CFLAGS) $(INCLUDE) -o smoother $(TOOLSSRC)  Smoother.cpp $(LIBS)
 jogo:
 	$(CC) $(CFLAGS) $(INCLUDE) -o jogo $(TOOLSSRC) jogo.cpp $(LIBS)
+sphereworld:
+	$(CC) $(CFLAGS) $(INCLUDE) -o sphere $(TOOLSSRC) SphereWorld2.cpp $(LIBS)
 
 clean:
 	rm curso
