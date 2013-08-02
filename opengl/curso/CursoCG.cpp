@@ -35,11 +35,11 @@ const int totalAsteroides = 10;
 
 // Classes auxiliares do GLTools
 GLShaderManager		shaderManager;     //The shader manager of GLTools
-GLFrame				cameraFrame;       //Frame of reference for the camera
-GLFrustum			viewFrustum;       //View frustum
+GLFrame			cameraFrame;       //Frame of reference for the camera
+GLFrustum		viewFrustum;       //View frustum
 GLMatrixStack		modelViewMatrix;   //Modelview Matrix
 GLMatrixStack		projectionMatrix;  //Projection Matrix
-GLGeometryTransform transformPipeline; //Geometry Transform Pipeline
+GLGeometryTransform     transformPipeline; //Geometry Transform Pipeline
 
 // Parametros da camera
 M3DVector3f			gCameraPosition =   {-5.0f, 1.0f, 0.0f};    //Camera position
@@ -48,8 +48,8 @@ M3DVector3f			gCameraUp =         {0.0f, 1.0f, 0.0f};	    //Camera up direction
 GLfloat				gCameraYaw =        0.0f;					//Carmera Yaw
 
 // Batchs
-GLBatch				axisBatch;			// Batch de geometria dos eixos
-GLBatch				linesBatch;			// Batch de geometria das linhas
+GLBatch			axisBatch;			// Batch de geometria dos eixos
+GLBatch			linesBatch;			// Batch de geometria das linhas
 GLTriangleBatch		sphereBatch;        // Batch de geometria da esfera
 ObjFile*		asteroides[totalAsteroides];
 ObjFile*		spaceshipBatch;
@@ -63,6 +63,8 @@ float               updateFrequency = 1.0;      // Frequencia de atualização da 
 //variaveis para controle da nave
 float		posicaoNave[3] = {0.0f, 0.0f, 0.0f};
 const float	fatorMovimentacaoNave = 0.090f;
+float 		anguloRotacaoNave = 2.0f;
+float 		totalRotacaoNave = 0.0f;
 
 //variaveis utilizadas para controlar movimentação dos asteroides
 GLfloat 	posicaoAsteroides[totalAsteroides * 3];
@@ -100,22 +102,24 @@ void SpecialKeys(int key, int x, int y)
 {
 	switch(key) {
 		case GLUT_KEY_UP:
-			posicaoNave[0] += fatorMovimentacaoNave;
+			//posicaoNave[0] += fatorMovimentacaoNave;
 			//gCameraPosition[0] += cos(gCameraYaw) * 0.1f;
 			//gCameraPosition[2] += sin(gCameraYaw) * 0.1f;
 			break;
 		case GLUT_KEY_DOWN:
-			posicaoNave[0] -= fatorMovimentacaoNave;
+			//posicaoNave[0] -= fatorMovimentacaoNave;
 			//gCameraPosition[0] -= cos(gCameraYaw) * 0.1f;
 			//gCameraPosition[2] -= sin(gCameraYaw) * 0.1f;
 			break;
 		case GLUT_KEY_LEFT:
-			posicaoNave[2] -= fatorMovimentacaoNave;
+			//posicaoNave[2] -= fatorMovimentacaoNave;
 			//gCameraYaw -= 0.5f;
+			totalRotacaoNave += anguloRotacaoNave;
 			break;
 		case GLUT_KEY_RIGHT:
-			posicaoNave[2] += fatorMovimentacaoNave;
+			//posicaoNave[2] += fatorMovimentacaoNave;
 			//gCameraYaw += 0.5f;
+			totalRotacaoNave -= anguloRotacaoNave;
             		break;
 	}
 }
@@ -192,7 +196,7 @@ void desenhaNave(void)
 	glDisable(GL_CULL_FACE); // Habilita o culling de faces, por questoes de performance, desenhando apenas as faces da frente
 	modelViewMatrix.PushMatrix();
 	modelViewMatrix.Translate(posicaoNave[0], posicaoNave[1], posicaoNave[2]);
-	modelViewMatrix.Rotate(-90.0f, 0.0f, 1.0f, 0.0f);
+	modelViewMatrix.Rotate(totalRotacaoNave, 0.0f, 1.0f, 0.0f);
    	shaderManager.UseStockShader(GLT_SHADER_FLAT, transformPipeline.GetModelViewProjectionMatrix(), color);
 	spaceshipBatch->Draw();
 	modelViewMatrix.PopMatrix();
