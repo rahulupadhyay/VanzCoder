@@ -29,6 +29,7 @@ void desenhaAsteroides(void);
 void criaEPosicionaAsteroides(void);
 void movimentaRotacionaAsteroides(void);
 void desenhaNave(void);
+
 //Constantes
 const int totalAsteroides = 10;
 
@@ -82,7 +83,8 @@ GLuint uniformTexUnit1;
 
 /* KeyboardKeys */
 
-void KeyboardFunc(unsigned char key, int x, int y) {
+void KeyboardFunc(unsigned char key, int x, int y) 
+{
     
 	switch(key) {
 		case 'a':
@@ -94,33 +96,35 @@ void KeyboardFunc(unsigned char key, int x, int y) {
 	}
 }
 
-void SpecialKeys(int key, int x, int y) {
+void SpecialKeys(int key, int x, int y) 
+{
 	switch(key) {
 		case GLUT_KEY_UP:
-			//posicaoNave[0] += fatorMovimentacaoNave;
-			gCameraPosition[0] += cos(gCameraYaw) * 0.1f;
-			gCameraPosition[2] += sin(gCameraYaw) * 0.1f;
+			posicaoNave[0] += fatorMovimentacaoNave;
+			//gCameraPosition[0] += cos(gCameraYaw) * 0.1f;
+			//gCameraPosition[2] += sin(gCameraYaw) * 0.1f;
 			break;
 		case GLUT_KEY_DOWN:
-			//posicaoNave[0] -= fatorMovimentacaoNave;
-			gCameraPosition[0] -= cos(gCameraYaw) * 0.1f;
-			gCameraPosition[2] -= sin(gCameraYaw) * 0.1f;
+			posicaoNave[0] -= fatorMovimentacaoNave;
+			//gCameraPosition[0] -= cos(gCameraYaw) * 0.1f;
+			//gCameraPosition[2] -= sin(gCameraYaw) * 0.1f;
 			break;
 		case GLUT_KEY_LEFT:
-			//posicaoNave[2] -= fatorMovimentacaoNave;
-			gCameraYaw -= 0.5f;
+			posicaoNave[2] -= fatorMovimentacaoNave;
+			//gCameraYaw -= 0.5f;
 			break;
 		case GLUT_KEY_RIGHT:
-			//posicaoNave[2] += fatorMovimentacaoNave;
-			gCameraYaw += 0.5f;
-            break;
+			posicaoNave[2] += fatorMovimentacaoNave;
+			//gCameraYaw += 0.5f;
+            		break;
 	}
 }
 
 
 /* GameRender */
 
-void GameRender(void) {
+void GameRender(void) 
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Limpa os buffers e deixa com a cor definida
 	glViewport(0, 0, windowWidth, windowHeight); // Configura a viewport de acordo com o tamanho da tela
 
@@ -196,145 +200,149 @@ void desenhaNave(void)
 	
 }
 
-GLuint LoadTexture(const char* textureFileName){
-    GLuint textureIndex = 0;
-    GLint textureWidth;
-    GLint textureHeight;
-    GLint components;
-    GLenum eFormat;
+GLuint LoadTexture(const char* textureFileName)
+{
+    	GLuint textureIndex = 0;
+    	GLint textureWidth;
+    	GLint textureHeight;
+    	GLint components;
+    	GLenum eFormat;
     
-    GLbyte *textureData = gltReadTGABits(textureFileName, &textureWidth, &textureHeight, &components, &eFormat);
+    	GLbyte *textureData = gltReadTGABits(textureFileName, &textureWidth, &textureHeight, &components, &eFormat);
     
-    // Habilita as texturas 2D
-    glEnable(GL_TEXTURE_2D);
+    	// Habilita as texturas 2D
+    	glEnable(GL_TEXTURE_2D);
     
-    // Ativa a unidade de textura
-    glActiveTexture(GL_TEXTURE0);
+    	// Ativa a unidade de textura
+    	glActiveTexture(GL_TEXTURE0);
     
-    // Gera um nome de textura
-    glGenTextures(1, &textureIndex);
+    	// Gera um nome de textura
+    	glGenTextures(1, &textureIndex);
     
-    // Vincula a textura no contexto atual
-    glBindTexture(GL_TEXTURE_2D, textureIndex);
+    	// Vincula a textura no contexto atual
+    	glBindTexture(GL_TEXTURE_2D, textureIndex);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, components, textureWidth, textureHeight, 0, eFormat, GL_UNSIGNED_BYTE, textureData);
+    	glTexImage2D(GL_TEXTURE_2D, 0, components, textureWidth, textureHeight, 0, eFormat, GL_UNSIGNED_BYTE, textureData);
     
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     
-    glGenerateMipmap(GL_TEXTURE_2D);
+    	glGenerateMipmap(GL_TEXTURE_2D);
     
-    // Libera a textura
-    free(textureData);
+    	// Libera a textura
+    	free(textureData);
     
-    return textureIndex;
+    	return textureIndex;
 }
 
 
 // #MOD - 1
-GLuint LoadShader(std::string vertexShaderStr, std::string fragmentShaderStr){
-    GLuint programID;
-    GLuint vertexShader;
-    GLuint fragmentShader;
+GLuint LoadShader(std::string vertexShaderStr, std::string fragmentShaderStr)
+{
+    	GLuint programID;
+    	GLuint vertexShader;
+    	GLuint fragmentShader;
     
-    //    GLint status;
-    //    char log[1024];
+    	//    GLint status;
+    	//    char log[1024];
     
-    const char *vertexShaderChar = vertexShaderStr.c_str();
+    	const char *vertexShaderChar = vertexShaderStr.c_str();
     
-    // Cria o shader de vertice
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderChar, NULL);
-    glCompileShader(vertexShader);
+    	// Cria o shader de vertice
+    	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    	glShaderSource(vertexShader, 1, &vertexShaderChar, NULL);
+    	glCompileShader(vertexShader);
     
-    //    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-    //
-    //    if(status == GL_FALSE){
-    //        glGetShaderInfoLog(vertexShader, 1024, NULL, log);
-    //        fprintf(stderr, "Vertex compile failed:\n%s\n", log);
-    //        glDeleteShader(vertexShader);
-    //        return 0;
-    //    }
+    	//    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
+    	//
+    	//    if(status == GL_FALSE){
+    	//        glGetShaderInfoLog(vertexShader, 1024, NULL, log);
+    	//        fprintf(stderr, "Vertex compile failed:\n%s\n", log);
+    	//        glDeleteShader(vertexShader);
+    	//        return 0;
+    	//    }
     
-    const char *fragmenetShaderChar = fragmentShaderStr.c_str();
+    	const char *fragmenetShaderChar = fragmentShaderStr.c_str();
     
-    // Cria o shader de fragmento
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmenetShaderChar, NULL);
-    glCompileShader(fragmentShader);
+    	// Cria o shader de fragmento
+    	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    	glShaderSource(fragmentShader, 1, &fragmenetShaderChar, NULL);
+    	glCompileShader(fragmentShader);
     
-    //    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
-    //
-    //    if(status == GL_FALSE){
-    //        glGetShaderInfoLog(fragmentShader, 1024, NULL, log);
-    //        fprintf(stderr, "Fragment compile failed:\n%s\n", log);
-    //        glDeleteShader(fragmentShader);
-    //        return 0;
-    //    }
+    	//    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
+    	//
+    	//    if(status == GL_FALSE){
+    	//        glGetShaderInfoLog(fragmentShader, 1024, NULL, log);
+    	//        fprintf(stderr, "Fragment compile failed:\n%s\n", log);
+    	//        glDeleteShader(fragmentShader);
+    	//        return 0;
+    	//    }
     
-    // Cria um programa principal
-    programID = glCreateProgram();
+    	// Cria um programa principal
+    	programID = glCreateProgram();
     
-    // Anexa os shaders no programa
-    glAttachShader(programID, vertexShader);
-    glAttachShader(programID, fragmentShader);
+    	// Anexa os shaders no programa
+    	glAttachShader(programID, vertexShader);
+    	glAttachShader(programID, fragmentShader);
     
-    // Atribui um "local" a um atributo
-    glBindAttribLocation(programID, GLT_ATTRIBUTE_VERTEX, "vVertex");
-    glBindAttribLocation(programID, GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+    	// Atribui um "local" a um atributo
+    	glBindAttribLocation(programID, GLT_ATTRIBUTE_VERTEX, "vVertex");
+    	glBindAttribLocation(programID, GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
     
-    // Linka o programa
-    glLinkProgram(programID);
+    	// Linka o programa
+    	glLinkProgram(programID);
     
-    //    glGetProgramiv(programID, GL_LINK_STATUS, &status);
-    //
-    //    if(status == GL_FALSE){
-    //      glGetProgramInfoLog(programID, 1024, NULL, log);
-    //      fprintf(stderr, "Link failed:\n%s\n", log);
-    //      glDeleteProgram(programID);
-    //        return 0;
-    //    }
+    	//    glGetProgramiv(programID, GL_LINK_STATUS, &status);
+    	//
+    	//    if(status == GL_FALSE){
+    	//      glGetProgramInfoLog(programID, 1024, NULL, log);
+    	//      fprintf(stderr, "Link failed:\n%s\n", log);
+    	//      glDeleteProgram(programID);
+    	//        return 0;
+    	//    }
     
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    	glDeleteShader(vertexShader);
+    	glDeleteShader(fragmentShader);
     
-    glUseProgram(programID);
+    	glUseProgram(programID);
     
-    // Busca pelas variaveis do shader
-    uniformMVPMatrix = glGetUniformLocation(programID, "mvpMatrix");
-    uniformTexUnit = glGetUniformLocation(programID, "textureUnit0");
+    	// Busca pelas variaveis do shader
+    	uniformMVPMatrix = glGetUniformLocation(programID, "mvpMatrix");
+	uniformTexUnit = glGetUniformLocation(programID, "textureUnit0");
     
-    return programID;
+	return programID;
 }
 
 
 // #MOD
-std::string ReadFile(const char *fileName){
-    FILE *f = fopen(fileName, "rb");
-    std::string content;
+std::string ReadFile(const char *fileName)
+{
+	FILE *f = fopen(fileName, "rb");
+	std::string content;
     
-    if(f){
-        ssize_t readCount;
-        char *line = NULL;
-        size_t len = 0;
+	if(f){
+        	ssize_t readCount;
+	        char *line = NULL;
+        	size_t len = 0;
         
-        while((readCount = getline(&line, &len, f)) != EOF){
-            content += line;
-        }
+        	while((readCount = getline(&line, &len, f)) != EOF){
+            		content += line;
+        	}
         
-        fclose(f);
-    }
+        	fclose(f);
+    	}
     
-    return content;
+	return content;
 }
 
 
 /* CameraSetup */
 
-void ChangeSize(int w, int h) {
+void ChangeSize(int w, int h) 
+{
 		if (h == 0) {
 		h = 1;
 	}
@@ -345,7 +353,8 @@ void ChangeSize(int w, int h) {
   
 }
 
-void CameraUpdate(void) {
+void CameraUpdate(void) 
+{
 	projectionMatrix.LoadIdentity();
 	projectionMatrix.LoadMatrix (viewFrustum.GetProjectionMatrix());
     
@@ -372,22 +381,24 @@ void CameraUpdate(void) {
 
 /* GameLogic */
 
-void GameLogic(void) {
+void GameLogic(void) 
+{
 }
 
 /* MainCycle */
 
-void MainCycle(void){
-	 clock_t nowClock = clock();
-    // Calcula quanto tempo levou desde a ultima chamada
-    // (TICKS_AGORA - ULTIMO_TICKS) / TICKS_POR_SEGUNDO * 100
-    float lastTimeUpdate = (((float)nowClock - (float)lastClock) / CLOCKS_PER_SEC * 100);
+void MainCycle(void)
+{
+	clock_t nowClock = clock();
+   	// Calcula quanto tempo levou desde a ultima chamada
+    	// (TICKS_AGORA - ULTIMO_TICKS) / TICKS_POR_SEGUNDO * 100
+    	float lastTimeUpdate = (((float)nowClock - (float)lastClock) / CLOCKS_PER_SEC * 100);
     
-    // Verifica se deve atualizar a lógica
-    if(lastTimeUpdate > updateFrequency){
-        GameLogic();
-        lastClock = nowClock;
-    }
+    	// Verifica se deve atualizar a lógica
+    	if(lastTimeUpdate > updateFrequency){
+        	GameLogic();
+        	lastClock = nowClock;
+    	}
 	movimentaRotacionaAsteroides();
     
 	CameraUpdate();
@@ -415,43 +426,43 @@ void movimentaRotacionaAsteroides()
 }
 
 /* Init */
-void Init() {
+void Init() 
+{
 	glClearColor(0.3, 0.3, 0.3, 1.0);
 	glEnable(GL_DEPTH_TEST); // Habilita o buffer de teste de profundidade
 	glEnable(GL_CULL_FACE); // Habilita o culling de faces, por questoes de performance, desenhando apenas as faces da frente
     
-    // Inicializa o gerenciador de shaders
-    shaderManager.InitializeStockShaders();
+    	// Inicializa o gerenciador de shaders
+    	shaderManager.InitializeStockShaders();
     
-    CreateBatch();
+    	CreateBatch();
     
-    // #MOD - add textureUnit
-    texture1Index = LoadTexture("/home/vanz/gitroot/VanzCoder/opengl/curso/data/texture/sun.tga");
-    texture2Index = LoadTexture("/home/vanz/gitroot/VanzCoder/opengl/curso/data/texture/earth.tga");
+    	// #MOD - add textureUnit
+    	texture1Index = LoadTexture("/home/vanz/gitroot/VanzCoder/opengl/curso/data/texture/sun.tga");
+    	texture2Index = LoadTexture("/home/vanz/gitroot/VanzCoder/opengl/curso/data/texture/earth.tga");
     
-    std::string vertexShader = ReadFile("/home/vanz/gitroot/VanzCoder/opengl/curso/vertex.v2.vsh");
-    std::string fragmentShader = ReadFile("/home/vanz/gitroot/VanzCoder/opengl/cursofragment.v2.fsh");
+    	std::string vertexShader = ReadFile("/home/vanz/gitroot/VanzCoder/opengl/curso/vertex.v2.vsh");
+    	std::string fragmentShader = ReadFile("/home/vanz/gitroot/VanzCoder/opengl/cursofragment.v2.fsh");
     
-    shaderID = LoadShader(vertexShader, fragmentShader);
+    	shaderID = LoadShader(vertexShader, fragmentShader);
 	
 }
 
-/* Main */
-
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[])
+{
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
 	glutInitWindowSize(windowWidth, windowHeight);
 	glutCreateWindow("CursoCG");
 
-    glutReshapeFunc(ChangeSize);
-    glutDisplayFunc(MainCycle);
+    	glutReshapeFunc(ChangeSize);
+    	glutDisplayFunc(MainCycle);
 	glutIdleFunc(MainCycle);
 	glutSpecialFunc(SpecialKeys);
 	glutKeyboardFunc(KeyboardFunc);
     
-    GLenum err = glewInit();
+    	GLenum err = glewInit();
 
 	if (GLEW_OK != err) {
 		fprintf(stderr, "GLEW Error: %s\n", glewGetErrorString(err));
@@ -459,16 +470,14 @@ int main(int argc, char* argv[]){
 	}
 
 	Init();
-    
 	glutMainLoop();
-
-
 	return 0;
 }
 
 /* CreateBatch */
 
-void CreateBatch(){
+void CreateBatch()
+{
 	// Cria uma esfera
 	gltMakeSphere(sphereBatch, 1.0f, 26, 13);
     
