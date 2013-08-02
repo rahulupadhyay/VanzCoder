@@ -8,6 +8,7 @@
 
 #include <time.h>
 #include <iostream>
+#include <stdlib.h>
 
 // GLTools
 #include <GLTools.h>
@@ -27,7 +28,7 @@ void parse(const char * arquivo, GLBatch* batch);
 void desenhaAsteroides(void);
 void criaEPosicionaAsteroides(void);
 void movimentaRotacionaAsteroides(void);
-
+void desenhaNave(void);
 //Constantes
 const int totalAsteroides = 10;
 
@@ -40,7 +41,7 @@ GLMatrixStack		projectionMatrix;  //Projection Matrix
 GLGeometryTransform transformPipeline; //Geometry Transform Pipeline
 
 // Parametros da camera
-M3DVector3f			gCameraPosition =   {0.0f, 0.5f, 5.0f};    //Camera position
+M3DVector3f			gCameraPosition =   {-5.0f, 1.0f, 0.0f};    //Camera position
 M3DVector3f			gCameraLookAt =     {0.0f, 0.0f, 0.0f};     //Reference point to look at
 M3DVector3f			gCameraUp =         {0.0f, 1.0f, 0.0f};	    //Camera up direction
 GLfloat				gCameraYaw =        0.0f;					//Carmera Yaw
@@ -57,6 +58,7 @@ int                 windowWidth = 800;          // Largura da janela
 int                 windowHeight = 600;         // Altura da janela
 clock_t             lastClock = clock();        // Ticks do relógio
 float               updateFrequency = 1.0;      // Frequencia de atualização da lógica do game, em segundos
+float		posicaoNave[3] = {10.0f, 0.0f, 0.0f};
 
 //variaveis utilizadas para controlar movimentação dos asteroides
 GLfloat posicaoAsteroides[totalAsteroides * 3];
@@ -120,12 +122,9 @@ void GameRender(void) {
  	shaderManager.UseStockShader(GLT_SHADER_SHADED, transformPipeline.GetModelViewProjectionMatrix());
  	linesBatch.Draw();
 	axisBatch.Draw();
-	
 
-	desenhaAsteroides();
-	//spaceshipBatch->Draw();
-
-    
+	//desenhaAsteroides();
+   	desenhaNave(); 
 	// Translada e desenha a esfera
 	modelViewMatrix.PushMatrix();
     
@@ -165,7 +164,7 @@ void desenhaAsteroides()
 	float color[4] = {1.0f, 0.0f, 0.0f, 1.0f};    	
 	while(contador < totalAsteroides){
 		modelViewMatrix.PushMatrix();
-		modelViewMatrix.Translate(posicaoAsteroides[contador*3], posicaoAsteroides[(contador*3)+1], posicaoAsteroides[(contador*3)+2]);
+//		modelViewMatrix.Translate(posicaoAsteroides[contador*3], posicaoAsteroides[(contador*3)+1], posicaoAsteroides[(contador*3)+2]);
 		modelViewMatrix.Rotate(anguloRotacaoAsteroid[contador], 0.0f, 1.0f, 0.0f);
     		shaderManager.UseStockShader(GLT_SHADER_FLAT, transformPipeline.GetModelViewProjectionMatrix(), color);
 		asteroides[contador]->Draw();
@@ -175,9 +174,19 @@ void desenhaAsteroides()
 
 }
 
-
-
-# pragma mark GameLogic
+void desenhaNave(void)
+{
+	float color[4] = {0.0f, 0.0f, 0.0f, 1.0f};    	
+	glDisable(GL_CULL_FACE); // Habilita o culling de faces, por questoes de performance, desenhando apenas as faces da frente
+	modelViewMatrix.PushMatrix();
+	modelViewMatrix.Translate(posicaoNave[0], posicaoNave[1], posicaoNave[2]);
+	modelViewMatrix.Rotate(-90.0f, 0.0f, 1.0f, 0.0f);
+   	shaderManager.UseStockShader(GLT_SHADER_FLAT, transformPipeline.GetModelViewProjectionMatrix(), color);
+	spaceshipBatch->Draw();
+	modelViewMatrix.PopMatrix();
+	glEnable(GL_CULL_FACE); // Habilita o culling de faces, por questoes de performance, desenhando apenas as faces da frente
+	
+}
 
 GLuint LoadTexture(const char* textureFileName){
     GLuint textureIndex = 0;
@@ -387,14 +396,20 @@ void movimentaRotacionaAsteroides()
 		if(anguloRotacaoAsteroid[contador] >= 360){
 			anguloRotacaoAsteroid[contador] = 0.0f;
 		}
+		//movimentacao aleatoria
+		float fatorMovimentacao = 3.0f;
+		srand(time(NULL));
+		int eixo = rand() % 3;
+		posicaoAsteroides[(contador*3)+eixo] += fatorMovimentacao;
 		contador++;
 	}
+	
 }
 
 /* Init */
 void Init() {
-	 glClearColor(0.3, 0.3, 0.3, 1.0);
-//	glEnable(GL_DEPTH_TEST); // Habilita o buffer de teste de profundidade
+	glClearColor(0.3, 0.3, 0.3, 1.0);
+	glEnable(GL_DEPTH_TEST); // Habilita o buffer de teste de profundidade
 	glEnable(GL_CULL_FACE); // Habilita o culling de faces, por questoes de performance, desenhando apenas as faces da frente
     
     // Inicializa o gerenciador de shaders

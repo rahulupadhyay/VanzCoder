@@ -5,7 +5,7 @@ ObjFile::ObjFile(const char * arquivo, int tipo)
 	if(tipo == 1){ // asteroid ( esfera )
 		gltMakeSphere(this->tBatch, 1.0f, 24 , 12);
 	}else if (tipo == 2) { // nave ( cone ) 
-		gltMakeCylinder(this->tBatch, 0.0f, 5.0f, 5.0f, 10, 10);
+		gltMakeCylinder(this->tBatch, 0.0f, 0.5f, 1.0f, 10, 10);
 	}else{
 		this->batch = new GLBatch;
 		ObjFile::parse(arquivo, this->batch);
