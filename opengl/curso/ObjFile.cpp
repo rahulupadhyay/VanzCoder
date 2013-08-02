@@ -1,14 +1,29 @@
 #include "ObjFile.h"
 
-ObjFile::ObjFile(const char * arquivo)
+ObjFile::ObjFile(const char * arquivo, int tipo)
 {
-	this->batch = new GLBatch;
-	ObjFile::parse(arquivo, this->batch);
+	if(tipo == 1){ // asteroid ( esfera )
+		gltMakeSphere(this->tBatch, 1.0f, 24 , 12);
+	}else if (tipo == 2) { // nave ( cone ) 
+		gltMakeCylinder(this->tBatch, 0.0f, 5.0f, 5.0f, 10, 10);
+	}else{
+		this->batch = new GLBatch;
+		ObjFile::parse(arquivo, this->batch);
+	}
 }
 
 void ObjFile::Draw(void)
 {
-	this->batch->Draw();
+	this->tBatch.Draw();
+}
+void ObjFile::StartRotation(float rotationAngle, float x, float y, float z)
+{
+	this->rotationAngle = rotationAngle;
+}
+
+void ObjFile::StopRotation(void)
+{
+
 }
 
 void ObjFile::parse(const char * arquivo, GLBatch* batch)
@@ -118,6 +133,8 @@ void ObjFile::parse(const char * arquivo, GLBatch* batch)
 	int nVert = vertices.size()/3;
 	std::cout << "Número de vertex " << nVert << std::endl;
 	batch->Begin(GL_TRIANGLES,vertices.size());
+	GLTriangleBatch tBatch;
+	tBatch.BeginMesh(nVert);
 	int count = 0;
 	for(int i = 0; i < faces.size(); i += 9){
 		int v1 = (faces.at(i)-1) * 3;	
@@ -135,14 +152,31 @@ void ObjFile::parse(const char * arquivo, GLBatch* batch)
 		GLfloat x3 = vertices.at(v3);
 		GLfloat y3 = vertices.at(v3+1);
 		GLfloat z3 = vertices.at(v3+2);
+		
+		GLfloat nx1 = normals.at(v1);
+		GLfloat ny1 = normals.at(v1+1);
+		GLfloat nz1 = normals.at(v1+2);
+		
+		GLfloat nx2 = normals.at(v2);
+		GLfloat ny2 = normals.at(v2+1);
+		GLfloat nz2 = normals.at(v2+2);
+		
+		GLfloat nx3 = normals.at(v3);
+		GLfloat ny3 = normals.at(v3+1);
+		GLfloat nz3 = normals.at(v3+2);
 
+		M3DVector3f verts[3] = {{x1,y1,z1},{x2,y2,z2},{x3,y3,z3}};
+		M3DVector3f normals[3] = {{nx1,ny1,nz1},{nx2,ny2,nz2},{nx3,ny3,nz3}};
+		M3DVector2f texture[3] = {{0.0f,0.0f},{0.0f,0.0f},{0.0f,0.0f}};
+		
+		tBatch.AddTriangle(verts,normals,texture);
 		batch->Vertex3f(x1, y1, z1);
 		batch->Vertex3f(x2, y2, z2);
 		batch->Vertex3f(x3, y3, z3);
 		count++;
 	}
+	tBatch.End();
 	batch->End(); 
-	std::cout << "Total triangulo = " << count << std::endl;
 }
 
 

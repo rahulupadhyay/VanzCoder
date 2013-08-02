@@ -21,8 +21,15 @@
 
 #include "ObjFile.h"
 
-void CreateBatch();
+// Prototipos
+void CreateBatch(void);
 void parse(const char * arquivo, GLBatch* batch);
+void desenhaAsteroides(void);
+void criaEPosicionaAsteroides(void);
+void movimentaRotacionaAsteroides(void);
+
+//Constantes
+const int totalAsteroides = 10;
 
 // Classes auxiliares do GLTools
 GLShaderManager		shaderManager;     //The shader manager of GLTools
@@ -38,12 +45,11 @@ M3DVector3f			gCameraLookAt =     {0.0f, 0.0f, 0.0f};     //Reference point to l
 M3DVector3f			gCameraUp =         {0.0f, 1.0f, 0.0f};	    //Camera up direction
 GLfloat				gCameraYaw =        0.0f;					//Carmera Yaw
 
-
 // Batchs
 GLBatch				axisBatch;			// Batch de geometria dos eixos
 GLBatch				linesBatch;			// Batch de geometria das linhas
 GLTriangleBatch		sphereBatch;        // Batch de geometria da esfera
-ObjFile*				asteroidBatch;
+ObjFile*		asteroides[totalAsteroides];
 ObjFile*		spaceshipBatch;
 
 // Variaveis auxiliares
@@ -52,6 +58,9 @@ int                 windowHeight = 600;         // Altura da janela
 clock_t             lastClock = clock();        // Ticks do relógio
 float               updateFrequency = 1.0;      // Frequencia de atualização da lógica do game, em segundos
 
+//variaveis utilizadas para controlar movimentação dos asteroides
+GLfloat posicaoAsteroides[totalAsteroides * 3];
+float		anguloRotacaoAsteroid[totalAsteroides];
 
 // #MOD
 GLuint texture1Index;
@@ -105,12 +114,15 @@ void SpecialKeys(int key, int x, int y) {
 void GameRender(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Limpa os buffers e deixa com a cor definida
 	glViewport(0, 0, windowWidth, windowHeight); // Configura a viewport de acordo com o tamanho da tela
-    
+
+
  	// Desenha a cena
  	shaderManager.UseStockShader(GLT_SHADER_SHADED, transformPipeline.GetModelViewProjectionMatrix());
  	linesBatch.Draw();
 	axisBatch.Draw();
-    	asteroidBatch->Draw();
+	
+
+	desenhaAsteroides();
 	//spaceshipBatch->Draw();
 
     
@@ -146,7 +158,22 @@ void GameRender(void) {
 	glutSwapBuffers();
 }
 
+//função que desenha asteroides
+void desenhaAsteroides()
+{
+	int contador = 0;
+	float color[4] = {1.0f, 0.0f, 0.0f, 1.0f};    	
+	while(contador < totalAsteroides){
+		modelViewMatrix.PushMatrix();
+		modelViewMatrix.Translate(posicaoAsteroides[contador*3], posicaoAsteroides[(contador*3)+1], posicaoAsteroides[(contador*3)+2]);
+		modelViewMatrix.Rotate(anguloRotacaoAsteroid[contador], 0.0f, 1.0f, 0.0f);
+    		shaderManager.UseStockShader(GLT_SHADER_FLAT, transformPipeline.GetModelViewProjectionMatrix(), color);
+		asteroides[contador]->Draw();
+		modelViewMatrix.PopMatrix();
+		contador++;
+	}
 
+}
 
 
 
@@ -297,12 +324,12 @@ void ChangeSize(int w, int h) {
     
 	windowWidth = w;
 	windowHeight = h;
-    viewFrustum.SetPerspective (45.0f, float(windowWidth)/float(windowHeight), 0.1f, 1000.0f);
+    	viewFrustum.SetPerspective (45.0f, float(windowWidth)/float(windowHeight), 0.1f, 1000.0f);
   
 }
 
 void CameraUpdate(void) {
-    projectionMatrix.LoadIdentity();
+	projectionMatrix.LoadIdentity();
 	projectionMatrix.LoadMatrix (viewFrustum.GetProjectionMatrix());
     
 	M3DVector3f forwardVector = {0.0f, 0.0f, 0.0f};
@@ -329,7 +356,6 @@ void CameraUpdate(void) {
 /* GameLogic */
 
 void GameLogic(void) {
-
 }
 
 /* MainCycle */
@@ -345,18 +371,30 @@ void MainCycle(void){
         GameLogic();
         lastClock = nowClock;
     }
+	movimentaRotacionaAsteroides();
     
-    CameraUpdate();
+	CameraUpdate();
 	GameRender();
 
 }
 
+void movimentaRotacionaAsteroides()
+{
+	int contador = 0;
+	float anguloRotacao = 1.0f;
+	while(contador < totalAsteroides){
+		anguloRotacaoAsteroid[contador] += anguloRotacao;
+		if(anguloRotacaoAsteroid[contador] >= 360){
+			anguloRotacaoAsteroid[contador] = 0.0f;
+		}
+		contador++;
+	}
+}
 
 /* Init */
-
 void Init() {
 	 glClearColor(0.3, 0.3, 0.3, 1.0);
-	glEnable(GL_DEPTH_TEST); // Habilita o buffer de teste de profundidade
+//	glEnable(GL_DEPTH_TEST); // Habilita o buffer de teste de profundidade
 	glEnable(GL_CULL_FACE); // Habilita o culling de faces, por questoes de performance, desenhando apenas as faces da frente
     
     // Inicializa o gerenciador de shaders
@@ -373,8 +411,6 @@ void Init() {
     
     shaderID = LoadShader(vertexShader, fragmentShader);
 	
-	asteroidBatch = new ObjFile("/home/vanz/gitroot/VanzCoder/opengl/curso/asteroid.obj");
-	spaceshipBatch = new ObjFile("home/vanz/gitroot/VanzCoder/opengl/curso/spaceship.obj");
 }
 
 /* Main */
@@ -410,41 +446,92 @@ int main(int argc, char* argv[]){
 /* CreateBatch */
 
 void CreateBatch(){
-    // Cria uma esfera
-    gltMakeSphere(sphereBatch, 1.0f, 26, 13);
+	// Cria uma esfera
+	gltMakeSphere(sphereBatch, 1.0f, 26, 13);
     
-    // Cria os eixos
-    /* Initialise the axis batch with the vertices and color */
+	// Cria os eixos
+	/* Initialise the axis batch with the vertices and color */
 	axisBatch.Begin(GL_LINES, 6);
     
-    // x Axis
+    	// x Axis
 	axisBatch.Color4f(1.0f, 0.0f, 0.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,0.0f,0.0f);
-    axisBatch.Color4f(1.0f, 0.0f, 0.0f, 1.0f);
+    	axisBatch.Color4f(1.0f, 0.0f, 0.0f, 1.0f);
 	axisBatch.Vertex3f(1.0f,0.0f,0.0f);
     
 	// y Axis
-    axisBatch.Color4f(0.0f, 1.0f, 0.0f, 1.0f);
+    	axisBatch.Color4f(0.0f, 1.0f, 0.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,0.0f,0.0f);
-    axisBatch.Color4f(0.0f, 1.0f, 0.0f, 1.0f);
+    	axisBatch.Color4f(0.0f, 1.0f, 0.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,1.0f,0.0f);
     
 	// z Axis
-    axisBatch.Color4f(0.0f, 0.0f, 1.0f, 1.0f);
+    	axisBatch.Color4f(0.0f, 0.0f, 1.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,0.0f,0.0f);
-    axisBatch.Color4f(0.0f, 0.0f, 1.0f, 1.0f);
+    	axisBatch.Color4f(0.0f, 0.0f, 1.0f, 1.0f);
 	axisBatch.Vertex3f(0.0f,0.0f,1.0f);
 	axisBatch.End();
 
-    // Cria as linhas
+    	// Cria as linhas
 	linesBatch.Begin(GL_LINES, 84);
 	linesBatch.Color4f(0.5,0.5,0.5,1.0f);
 	for (int i=-10;i<=10;i++) {
-        linesBatch.Vertex3f(100*i,-1,-1000);
-        linesBatch.Vertex3f(100*i,-1,1000);
-        linesBatch.Vertex3f(-1000,-1,100*i);
-        linesBatch.Vertex3f(1000,-1,100*i);
+        	linesBatch.Vertex3f(100*i,-1,-1000);
+        	linesBatch.Vertex3f(100*i,-1,1000);
+        	linesBatch.Vertex3f(-1000,-1,100*i);
+        	linesBatch.Vertex3f(1000,-1,100*i);
 	}
 	linesBatch.End();
+
+	criaEPosicionaAsteroides();	
+	spaceshipBatch = new ObjFile("/home/vanz/gitroot/VanzCoder/opengl/curso/spaceship.obj", 2);
+}
+	
+void criaEPosicionaAsteroides()
+{
+	int contador = 0;
+	while(contador < totalAsteroides){
+		asteroides[contador] = new ObjFile("/home/vanz/gitroot/VanzCoder/opengl/curso/asteroid.obj", 1);
+		contador++;
+	}
+	posicaoAsteroides[0] = 0.0f; //x
+	posicaoAsteroides[1] = 0.0f; //y
+	posicaoAsteroides[2] = 50.0f;//z
+	
+	posicaoAsteroides[3] = 10.0f;
+	posicaoAsteroides[4] = 0.0f;
+	posicaoAsteroides[5] = 5.0f;
+
+	posicaoAsteroides[6] = 20.0f;
+	posicaoAsteroides[7] = 0.0f;
+	posicaoAsteroides[8] = 15.0f;
+
+	posicaoAsteroides[9] = 30.0f;
+	posicaoAsteroides[10] = 0.0f;
+	posicaoAsteroides[11] = 25.0f;
+
+	posicaoAsteroides[12] = 15.0f;
+	posicaoAsteroides[13] = 0.0f;
+	posicaoAsteroides[14] = -10.0f;
+
+	posicaoAsteroides[15] = 25.0f;
+	posicaoAsteroides[16] = 0.0f;
+	posicaoAsteroides[17] = -20.0f;
+
+	posicaoAsteroides[18] = -15.0f;
+	posicaoAsteroides[19] = 0.0f;
+	posicaoAsteroides[20] = -15.0f;
+
+	posicaoAsteroides[21] = -20.0f;
+	posicaoAsteroides[22] = 0.0f;
+	posicaoAsteroides[23] = -15.0f;
+
+	posicaoAsteroides[24] = -15.0f;
+	posicaoAsteroides[25] = 0.0f;
+	posicaoAsteroides[26] = 5.0f;
+
+	posicaoAsteroides[27] = -30.0f;
+	posicaoAsteroides[28] = 0.0f;
+	posicaoAsteroides[29] = 15.0f;
 }
 

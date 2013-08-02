@@ -4,14 +4,18 @@
 #include <fstream>
 #include <vector>
 #include <GLTools.h>
+#include <GLTriangleBatch.h>
 
 class ObjFile
 {
 private:
 	GLBatch* batch;
-
+	GLTriangleBatch tBatch;
+	float rotationAngle;
 public:
-	ObjFile(const char * arquivo);
+	ObjFile(const char * arquivo, int tipo);
 	void Draw(void);
+	void StartRotation(float rotationAngle, float x, float y, float z);
+	void StopRotation(void);
 	static void parse(const char * arquivo, GLBatch* batch);
 };
