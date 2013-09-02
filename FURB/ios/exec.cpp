@@ -11,7 +11,7 @@
 // Prototipos
 bool ehSerieFibonacci(int numero);
 int busca(int n, int * vector, int x);
-char * matriz_identidade(int * mat, int n);
+int matriz_identidade(int * mat, int n);
 void executaQuestaoFibonacci();
 void executaQuestaoBuscaVetor();
 void executaQuestaoMatrixIdentidade();
@@ -44,7 +44,7 @@ int busca(int n, int * vector, int x)
 }
 
 /*
- * Implemente uma funçã que indique se uma matriz quadrada de números inteiros é uma
+ * Implemente uma função que indique se uma matriz quadrada de números inteiros é uma
  * matriz identidade ou não. A função deve retornar 1 se a matriz for uma matriz identi-
  * dade, e 0 caso contrário. A funçao recebe como parâmetros a matriz de inteiros, usando
  * a representação de matrizes através de vetores simples, e um inteiro n, indicando a
@@ -52,9 +52,15 @@ int busca(int n, int * vector, int x)
  *
  * 	int matriz_identidade (int* mat, int n);
 */
-char* matriz_identidade(int * mat, int n)
+int matriz_identidade(int * mat, int n)
 {
-
+	int tamanho = n * n;
+	for(int i = 0; i < tamanho; i+=(n+1)){
+		if(mat[i] != 1){
+			return 0;
+		}
+	}
+	return 1;
 }
 
 void executaQuestaoFibonacci()
@@ -68,11 +74,20 @@ void executaQuestaoBuscaVetor()
 
 void executaQuestaoMatrixIdentidade()
 {
-	cout << "Indique a dimensão da matrix quadrada: " << endl;
-	char charDimensao = fgetc(stdin);
-	int dimensao = atoi(&charDimensao);
-
-	cout << "Dimensão eh = " << dimensao << endl;
+//	cout << "Indique a dimensão da matrix quadrada: " << endl;
+//	char charDimensao = fgetc(stdin);
+//	int dimensao = atoi(&charDimensao);
+//	cout << "Dimensão eh = " << dimensao << endl;
+	int matrix[] = {1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1};
+	if(matriz_identidade(matrix,4)){
+		cout << "Eh matrix identidade" << endl;
+	}else{
+		cout << "Não eh matrix identidade" << endl;
+	}
+	
 }
 
 int main( int argc, char** argv)
