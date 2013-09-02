@@ -40,7 +40,12 @@ bool ehSerieFibonacci(int numero)
  */
 int busca(int n, int * vector, int x)
 {
-
+	for(int i = 0; i < n; i++){
+		if(vector[i] == x){
+			return 1;
+		}
+	}
+	return 0;
 }
 
 /*
@@ -69,15 +74,16 @@ void executaQuestaoFibonacci()
 }
 void executaQuestaoBuscaVetor()
 {
-
+	int vector[] = {1,2,3,4,5,6,7,8,9,0};
+	if(busca(10,vector,10)){
+		cout << "Elementos existe no vector" << endl;
+	}else{
+		cout << "Elementos não existe no vector" << endl;
+	}
 }
 
 void executaQuestaoMatrixIdentidade()
 {
-//	cout << "Indique a dimensão da matrix quadrada: " << endl;
-//	char charDimensao = fgetc(stdin);
-//	int dimensao = atoi(&charDimensao);
-//	cout << "Dimensão eh = " << dimensao << endl;
 	int matrix[] = {1,0,0,0,
 			0,1,0,0,
 			0,0,1,0,
@@ -108,6 +114,7 @@ int main( int argc, char** argv)
 			case '1':
 				break;
 			case '2':
+				executaQuestaoBuscaVetor();
 				break;
 			case '3':
 				executaQuestaoMatrixIdentidade();
