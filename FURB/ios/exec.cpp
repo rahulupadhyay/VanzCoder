@@ -7,14 +7,17 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 // Prototipos
 bool ehSerieFibonacci(int numero);
+bool is_perfect_square(int n);
 int busca(int n, int * vector, int x);
 int matriz_identidade(int * mat, int n);
 void executaQuestaoFibonacci();
 void executaQuestaoBuscaVetor();
 void executaQuestaoMatrixIdentidade();
+void printCabecalho();
 
 using namespace std;
 
@@ -29,8 +32,23 @@ using namespace std;
  */	
 bool ehSerieFibonacci(int numero)
 {
+	float result = (5 * ( numero * numero)) + 4; 
+	float result2 = (5 * ( numero * numero)) - 4; 
 
+	if(is_perfect_square(result) | is_perfect_square(result2)){
+		return true;
+	}
+	return false;
 }
+
+bool is_perfect_square(int n) {
+	if (n < 0){
+		return false;
+	}
+    	int root(round(sqrt(n)));
+    	return n == root * root;
+}
+
 /*
  * Implemente a função busca, que recebe como parâmetro um vetor de números inteiros
  * (vet) de tamanho n e um valor x. A função deve retornar 1 se x pertence a esse vetor
@@ -70,48 +88,35 @@ int matriz_identidade(int * mat, int n)
 
 void executaQuestaoFibonacci()
 {
-
+	cout << "Informe um número: ";
+	int numero;
+	scanf("%d", &numero);
+	if(ehSerieFibonacci(numero)){
+		cout << "PERTENCE A SERIE FIBONACCI" << endl;
+	}else{
+		cout << "NÃO PERTENCE A SERIE FIBONACCI" << endl;
+	}
+	
 }
 void executaQuestaoBuscaVetor()
 {
-	int vector[] = {1,2,3,4,5,6,7,8,9,0};
-	if(busca(10,vector,10)){
-		cout << "Elementos existe no vector" << endl;
-	}else{
-		cout << "Elementos não existe no vector" << endl;
-	}
+
 }
 
 void executaQuestaoMatrixIdentidade()
 {
-	int matrix[] = {1,0,0,0,
-			0,1,0,0,
-			0,0,1,0,
-			0,0,0,1};
-	if(matriz_identidade(matrix,4)){
-		cout << "Eh matrix identidade" << endl;
-	}else{
-		cout << "Não eh matrix identidade" << endl;
-	}
 	
 }
 
 int main( int argc, char** argv)
 {
-	cout << string(300,'\n') << endl;	
-	cout << "Exercícios da disciplina de iOS." << endl;
-	cout << "Aluno: José Guilherme Vanz" << endl;
-	cout << endl << "Escolha uma opção:" << endl;
-	cout << "1. Lista 1 - Exec 07" << endl; 
-	cout << "2. Lista 1 - Exec 25" << endl; 
-	cout << "3. Lista 2 - Exec 16" << endl;
-	cout << "4. Finalizar" << endl;
-
+	printCabecalho();
 	while(true){	
 		int selecao = getchar();
 	
 		switch(selecao){
 			case '1':
+				executaQuestaoFibonacci();
 				break;
 			case '2':
 				executaQuestaoBuscaVetor();
@@ -125,4 +130,16 @@ int main( int argc, char** argv)
 		}
 	}
  
+}
+
+void printCabecalho()
+{
+	cout << string(300,'\n') << endl;
+	cout << "Exercícios da disciplina de iOS." << endl;
+	cout << "Aluno: José Guilherme Vanz" << endl;
+	cout << endl << "Escolha uma opção:" << endl;
+	cout << "1. Lista 1 - Exec 07" << endl; 
+	cout << "2. Lista 1 - Exec 25" << endl; 
+	cout << "3. Lista 2 - Exec 16" << endl;
+	cout << "4. Finalizar" << endl;
 }
