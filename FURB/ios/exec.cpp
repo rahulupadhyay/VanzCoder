@@ -129,7 +129,32 @@ void executaQuestaoBuscaVetor()
 
 void executaQuestaoMatrixIdentidade()
 {
+	cout << "Informe o vetor da matrix( para finalizar informe -999): " << endl; 
+	int numero, contador = 0;
+	int tamanho = 4;
+	int * vector = (int*) malloc(sizeof(int) * tamanho);
+	while(true){
+		scanf("%d", &numero);
+		if(numero == -999){
+			break;
+		}else{
+			vector[contador] = numero;
+			contador++;
+			if(contador == tamanho){
+				vector = (int*) realloc(vector, (sizeof(int) * (tamanho+4)));
+				tamanho += 4;	
+			}
+		}
+	}
 	
+	cout << "Informe dimensão da matrix: " << endl;
+	cin >> numero;
+	if(matriz_identidade(vector, numero)){
+		cout << "É matrix identidade" << endl;
+	}else{
+		cout << "Não é matrix identidade" << endl;
+	}
+	free(vector);
 }
 
 int main( int argc, char** argv)
