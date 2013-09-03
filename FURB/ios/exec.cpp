@@ -100,7 +100,31 @@ void executaQuestaoFibonacci()
 }
 void executaQuestaoBuscaVetor()
 {
-
+	cout << "Informe o vetor( para finalizar informe -999): " << endl; 
+	int numero, contador = 0;
+	int tamanho = 5;
+	int * vector = (int*) malloc(sizeof(int) * tamanho);
+	while(true){
+		scanf("%d", &numero);
+		if(numero == -999){
+			break;
+		}else{
+			vector[contador] = numero;
+			contador++;
+			if(contador == tamanho){
+				vector = (int*) realloc(vector, (sizeof(int) * (tamanho+5)));
+				tamanho += 5;	
+			}
+		}
+	}
+	cout << "Informe o número que vc procura: " << endl;
+	cin >> numero;
+	if(busca(contador, vector, numero)){
+		cout << "O número pertence ao vector" << endl;
+	}else{
+		cout << "O número não pertence ao vector" << endl;
+	}
+	free(vector);
 }
 
 void executaQuestaoMatrixIdentidade()
