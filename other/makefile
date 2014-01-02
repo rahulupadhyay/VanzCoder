@@ -16,5 +16,8 @@ read_file:
 void_pointer_fun:
 	$(CC) $(CCFLAGS) -o void_pointer_fun.o void_pointer_fun.cpp
 
+interpolation:
+	$(CC) $(CCFLAGS) -o interpolation.o interpolation.cpp
+
 clean:
-	rm *.o	
+	rm *.o
