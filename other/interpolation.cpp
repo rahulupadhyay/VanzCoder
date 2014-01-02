@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 
 #define NUMBER_POINTS 5;
 
