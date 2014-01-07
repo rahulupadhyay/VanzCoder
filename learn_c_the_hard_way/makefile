@@ -19,5 +19,8 @@ exec7:
 exec8:
 	$(CC) $(CFLAGS) exec8.c -o ex8
 
+exec15:
+	$(CC) $(CFLAGS) exec15.c -o ex15
+
 clean:
-	rm -f ex1 ex3 ex4 ex6 ex7 ex8
+	rm -f ex1 ex3 ex4 ex6 ex7 ex8 ex15
